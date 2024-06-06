@@ -31,9 +31,9 @@ import demo.db.CommonJavaRepositoryImpl;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-	basePackages = "demo2.db.main", //all repositories under this basePackages will use this connection pool 
-	entityManagerFactoryRef = "entityManagerFactoryDemo2Main", //this name must be unique throughout all java application within same tomcat, format : entityManagerFactoryXXXXyyy (XXXX stands for application name, yyy stands for DB name)
-	transactionManagerRef = "transactionManagerDemo2Main", //this name must be unique throughout all java application within same tomcat , format : transactionManagerXXXXyyy (XXXX stands for application name, yyy stands for DB name)
+	basePackages = "demo.db.main", //all repositories under this basePackages will use this connection pool 
+	entityManagerFactoryRef = "entityManagerFactoryDemoMain", //this name must be unique throughout all java application within same tomcat, format : entityManagerFactoryXXXXyyy (XXXX stands for application name, yyy stands for DB name)
+	transactionManagerRef = "transactionManagerDemoMain", //this name must be unique throughout all java application within same tomcat , format : transactionManagerXXXXyyy (XXXX stands for application name, yyy stands for DB name)
 	repositoryBaseClass = CommonJavaRepositoryImpl.class
 )
 public class JPAMainConfig {
@@ -45,10 +45,10 @@ public class JPAMainConfig {
 	@Bean
 	@Primary //Only Main DB is needed to set Primary
 	//this name must be unique throughout all java application within same tomcat, format : entityManagerFactoryXXXXyyy (XXXX stands for application name, yyy stands for DB name)
-	public LocalContainerEntityManagerFactoryBean entityManagerFactoryDemo2Main() { 
+	public LocalContainerEntityManagerFactoryBean entityManagerFactoryDemoMain() { 
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(dataSourceDemo2Main());
-		em.setPackagesToScan(new String[] { "demo2.db.main" }); //all repositories under this basePackages will use this connection pool 
+		em.setDataSource(dataSourceDemoMain());
+		em.setPackagesToScan(new String[] { "demo.db.main" }); //all repositories under this basePackages will use this connection pool 
  
 		Map<String,Object> props = new HashMap<String,Object>();
 		props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
@@ -63,13 +63,13 @@ public class JPAMainConfig {
 	@Bean
 	//@Primary //Only Main DB is needed to set Primary
 	//this name must be unique throughout all java application within same tomcat, format : sessionFactoryXXXXyyy (XXXX stands for application name, yyy stands for DB name)
-	public LocalSessionFactoryBean sessionFactoryDemo2Main() { 
+	public LocalSessionFactoryBean sessionFactoryDemoMain() { 
 		Properties prop = new Properties();
 		prop.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 		
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		sessionFactory.setDataSource(dataSourceDemo2Main());
-		sessionFactory.setPackagesToScan(new String[] { "demo2.db.main" }); //all repositories under this basePackages will use this connection pool 
+		sessionFactory.setDataSource(dataSourceDemoMain());
+		sessionFactory.setPackagesToScan(new String[] { "demo.db.main" }); //all repositories under this basePackages will use this connection pool 
 		sessionFactory.setHibernateProperties(prop);
 		
 		return sessionFactory;
@@ -78,10 +78,8 @@ public class JPAMainConfig {
 	@Bean
 	@Primary //Only Main DB is needed to set Primary
 	//function name must be unique throughout all java application within same tomcat, format : dataSourceXXXXyyy (XXXX stands for application name, yyy stands for DB name)
-	public DataSource dataSourceDemo2Main() {
-	//public Log4jdbcProxyDataSource dataSourceJshc2Main() { //log4jdbc, for pre-dev only
+	public DataSource dataSourceDemoMain() {
 		BasicDataSource dataSource = new BasicDataSource();
-		System.out.println("testing databaseconnection");
 		dataSource.setDriverClassName(env.getProperty(AppConstants.DB_DRIVER));
 		dataSource.setUrl(env.getProperty(AppConstants.MAIN_DB_URL));
 		dataSource.setUsername(env.getProperty(AppConstants.MAIN_DB_USERNAME));
@@ -97,9 +95,9 @@ public class JPAMainConfig {
 	@Bean
 	@Primary //Only Main DB is needed to set Primary
 	//function name must be unique throughout all java application within same tomcat, format : transactionManagerXXXXyyy (XXXX stands for application name, yyy stands for DB name)
-	public PlatformTransactionManager transactionManagerDemo2Main() {
+	public PlatformTransactionManager transactionManagerDemoMain() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactoryDemo2Main().getObject());
+		transactionManager.setEntityManagerFactory(entityManagerFactoryDemoMain().getObject());
  
 		return transactionManager;
 	}
@@ -107,7 +105,7 @@ public class JPAMainConfig {
 	@Bean
 	@Primary //Only Main DB is needed to set Primary
 	//function name must be unique throughout all java application within same tomcat, format : exceptionTranslationXXXXyyy (XXXX stands for application name, yyy stands for DB name)
-	public PersistenceExceptionTranslationPostProcessor exceptionTranslationDemo2Main() {
+	public PersistenceExceptionTranslationPostProcessor exceptionTranslationDemoMain() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
 
