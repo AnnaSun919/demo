@@ -1,18 +1,13 @@
 package demo.db.main.persistence.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.SelectBeforeUpdate;
@@ -29,6 +24,15 @@ public class UserDAO implements Serializable {
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer userId;
+	
+	@Column(name="GROUP_ID")
+	private String GROUP_ID;
+	
+	@Column(name="NAME")
+	private String name;
+	
+	@Column(name="PASSWORD")
+	private String password;
 
 	@Column(name="EMAIL")
 	private String email;
@@ -41,12 +45,6 @@ public class UserDAO implements Serializable {
 	
 	@Column(name="UPDATED_AT")
 	private Timestamp updatedAt;
-	
-	@Column(name="NAME")
-	private String Name;
-	
-	@Column(name="PASSWORD")
-	private String password;
 
 	public Integer getUserId() {
 		return userId;
@@ -54,6 +52,30 @@ public class UserDAO implements Serializable {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+	
+	public String getGROUP_ID() {
+		return GROUP_ID;
+	}
+
+	public void setGROUP_ID(String GROUP_ID) {
+		this.GROUP_ID = GROUP_ID;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getEmail() {
@@ -88,22 +110,7 @@ public class UserDAO implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public String getName() {
-		return Name;
-	}
 
-	public void setName(String name) {
-		Name = name;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
 	
 
 }
