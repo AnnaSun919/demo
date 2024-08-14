@@ -1,43 +1,57 @@
 package demo.service;
 
-import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import demo.common.PasswordHelper;
 import demo.db.main.persistence.domain.UserDAO;
 import demo.db.main.persistence.repository.UserRepository;
 
 public class UserEventHandler implements UserService {
-	
-	HashMap<String, String> userInfo = new HashMap<String, String>();
 	
 	UserDAO user = new UserDAO();
 	
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private PasswordHelper passwordHelper;
+	
 	@Override
-    public void createUser(String Name, String Email, String Password) {
+    public String createUser(String Name, String Email, String Password) {
     	try {
 
     		UserDAO user = new UserDAO();
     		
     		user.setName(Name);
     		user.setEmail(Email);
-    		user.setPassword(Password);
+    		String encryptedPassword = passwordHelper.encryptPassword(Password);
+    		user.setPassword(encryptedPassword);
     		
+    		UserDAO existedUser = userRepository.findByName(Name);
+    		
+    		if(existedUser != null) {
+    			return "User Name has been registered";
+    		}
+   
     		userRepository.save(user);
+    		return "regristration success"; 
+    		
     	}catch (Exception e) {
     		System.out.println("tesitng save error" + e);
+    		return "Error occurs " + e; 
     	}
     }
 
 	@Override
 	public String login(String username, String password) {
-		if(password.equals(userInfo.get(username.toLowerCase()))) {
-			return "Login Sucess";
+		
+		UserDAO user = userRepository.findByName(username);
+		
+		if(passwordHelper.checkPassword(password,user.getPassword())) {
+			return "login success";
 		}
-
-		return "Incorrect Username or password";
+		
+		return "Invalid Username and/or Password ";
 	}
 
 	

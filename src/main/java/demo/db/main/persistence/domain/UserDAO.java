@@ -21,7 +21,7 @@ public class UserDAO implements Serializable {
 	private static final long serialVersionUID = 8353340778316173420L;
 
 	@Id
-	@Column(name="id")
+	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer userId;
 	
