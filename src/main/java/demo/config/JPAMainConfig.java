@@ -24,6 +24,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import demo.common.PasswordHelper;
 import demo.common.constants.AppConstants;
 import demo.db.CommonJavaRepositoryImpl;
 
@@ -108,5 +109,10 @@ public class JPAMainConfig {
 	public PersistenceExceptionTranslationPostProcessor exceptionTranslationDemoMain() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
+	
+    @Bean
+    public PasswordHelper passwordHelper() {
+    	return new PasswordHelper();
+    }
 
 }
