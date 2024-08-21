@@ -2,10 +2,9 @@ package demo.common.constants;
 
 
 /**
- * @author iseric
- * @since 12/5/2016
  * @see Class for Application Constants
  */
+
 public class AppConstants {
 	
 	//common constants
