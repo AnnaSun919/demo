@@ -3,6 +3,7 @@ package demo.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import demo.common.PasswordHelper;
 import demo.service.*;
 
 @Configuration
@@ -16,6 +17,11 @@ public class CoreConfig {
     @Bean
     public MeetingService MeetingService() {
         return new MeetingEventHandler();
+    }
+    
+    @Bean
+    public PasswordHelper passwordHelper() {
+    	return new PasswordHelper();
     }
 
 }

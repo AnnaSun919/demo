@@ -110,9 +110,6 @@ public class JPAMainConfig {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
 	
-    @Bean
-    public PasswordHelper passwordHelper() {
-    	return new PasswordHelper();
-    }
+
 
 }
