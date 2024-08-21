@@ -15,13 +15,13 @@ public class CoreConfig {
     }
     
     @Bean
-    public MeetingService MeetingService() {
-        return new MeetingEventHandler();
+    public PasswordHelper passwordHelper() {
+    	return new PasswordHelper();
     }
     
     @Bean
-    public PasswordHelper passwordHelper() {
-    	return new PasswordHelper();
+    public RoomService RoomService() {
+        return new RoomEventHandler();
     }
 
 }
