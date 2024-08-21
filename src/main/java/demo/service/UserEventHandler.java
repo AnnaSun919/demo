@@ -37,7 +37,6 @@ public class UserEventHandler implements UserService {
     		return "regristration success"; 
     		
     	}catch (Exception e) {
-    		System.out.println("tesitng save error" + e);
     		return "Error occurs " + e; 
     	}
     }
@@ -47,8 +46,10 @@ public class UserEventHandler implements UserService {
 		
 		UserDAO user = userRepository.findByName(username);
 		
-		if(passwordHelper.checkPassword(password,user.getPassword())) {
-			return "login success";
+		if(user != null) {
+			if(passwordHelper.checkPassword(password, user.getPassword())) {
+				return "login success";
+			}
 		}
 		
 		return "Invalid Username and/or Password ";
