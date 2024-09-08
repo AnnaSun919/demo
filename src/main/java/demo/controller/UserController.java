@@ -22,10 +22,10 @@ public class UserController {
 	private UserService userService;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String UserLogin(HttpServletRequest request, @RequestBody CommonJson inputJson) throws Exception {
+	public CommonJson UserLogin(HttpServletRequest request, @RequestBody CommonJson inputJson) throws Exception {
 		String username = StringUtils.isEmpty(inputJson.get("username"))? null : inputJson.get("username");
 		String password = StringUtils.isEmpty(inputJson.get("password"))? null : inputJson.get("password");
-		String isLogined = username != null && password != null? userService.login(username, password ) : "Invalid Username and/or Password ";
+		CommonJson isLogined = username != null && password != null? userService.login(username, password ) : null;
 		
 		return isLogined;
 	}
