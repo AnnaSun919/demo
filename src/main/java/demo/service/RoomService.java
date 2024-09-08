@@ -1,7 +1,7 @@
 package demo.service;
 
 public interface RoomService {
-	
-	public String createRoom(String Name, String Description, String capacity);
+
+	public String createRoom(String name, String description, String capacity, String groupId);
 
 }
