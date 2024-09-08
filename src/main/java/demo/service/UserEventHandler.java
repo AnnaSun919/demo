@@ -1,14 +1,13 @@
 package demo.service;
 
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import demo.common.PasswordHelper;
+import demo.common.json.CommonJson;
 import demo.db.main.persistence.domain.UserDAO;
 import demo.db.main.persistence.repository.UserRepository;
 
 public class UserEventHandler implements UserService {
-	
-	UserDAO user = new UserDAO();
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -42,17 +41,30 @@ public class UserEventHandler implements UserService {
     }
 
 	@Override
-	public String login(String username, String password) {
+	public CommonJson login(String username, String password) {
 		
 		UserDAO user = userRepository.findByName(username);
 		
-		if(user != null) {
-			if(passwordHelper.checkPassword(password, user.getPassword())) {
-				return "login success";
-			}
+		if(user == null||!passwordHelper.checkPassword(password, user.getPassword())) {
+			return null;
 		}
+
+		String uuid = UUID.randomUUID().toString();
+
+		return new CommonJson()
+			.set("auth", new CommonJson().set("token", uuid))
+			.set(
+				"admin",
+				new CommonJson()
+					.set("id", user.getUserId())
+					.set("email", user.getEmail())
+					.set("name", user.getName())
+			);
 		
-		return "Invalid Username and/or Password ";
+		
+		//check admin role and group here
+		// if not admin // not in group == unauthorized 
+
 	}
 
 	
