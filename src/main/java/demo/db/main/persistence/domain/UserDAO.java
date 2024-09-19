@@ -5,8 +5,6 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,14 +14,12 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 @Table(name = "USER")
 @SelectBeforeUpdate
 public class UserDAO implements Serializable {
-	
 
 	private static final long serialVersionUID = 8353340778316173420L;
 
 	@Id
 	@Column(name="ID")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer userId;
+	private String userId;
 	
 	@Column(name="GROUP_ID")
 	private String GROUP_ID;
@@ -46,11 +42,11 @@ public class UserDAO implements Serializable {
 	@Column(name="UPDATED_AT")
 	private Timestamp updatedAt;
 
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 	
