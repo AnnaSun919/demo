@@ -33,6 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    	http.cors();
 		http.csrf().disable()
 		.addFilterAfter(new TokenAuthenticationFilter(tokenHelper), UsernamePasswordAuthenticationFilter.class)
 		.authorizeRequests()
@@ -46,7 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:8005"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3001"));
         configuration.setAllowedMethods(List.of("GET","POST"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 
