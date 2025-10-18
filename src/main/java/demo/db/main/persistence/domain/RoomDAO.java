@@ -37,7 +37,7 @@ public class RoomDAO implements Serializable {
 	private String capacity;
 	
 	@Column(name="STATUS")
-	private String suspended;
+	private String status;
 	
 	@Column(name="CREATED_AT")
 	private Timestamp createdAt;
@@ -85,13 +85,6 @@ public class RoomDAO implements Serializable {
 		this.capacity = capacity;
 	}
 
-	public String getSuspended() {
-		return suspended;
-	}
-
-	public void setSuspended(String suspended) {
-		this.suspended = suspended;
-	}
 
 	public Timestamp getCreatedAt() {
 		return createdAt;
@@ -107,6 +100,14 @@ public class RoomDAO implements Serializable {
 
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	

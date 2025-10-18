@@ -21,9 +21,6 @@ public class UserDAO implements Serializable {
 	@Column(name="ID")
 	private String userId;
 	
-	@Column(name="GROUP_ID")
-	private String GROUP_ID;
-	
 	@Column(name="NAME")
 	private String name;
 	
@@ -48,14 +45,6 @@ public class UserDAO implements Serializable {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
-	}
-	
-	public String getGROUP_ID() {
-		return GROUP_ID;
-	}
-
-	public void setGROUP_ID(String GROUP_ID) {
-		this.GROUP_ID = GROUP_ID;
 	}
 
 	public String getName() {

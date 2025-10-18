@@ -19,7 +19,7 @@ public class GroupDAO {
 	private static final long serialVersionUID = 8353340778316173420L;
 	
 	@Id
-	@Column(name="id")
+	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer groupId;
 	
@@ -34,6 +34,48 @@ public class GroupDAO {
 	
 	@Column(name="UPDATED_AT")
 	private Timestamp updatedAt;
+
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+	
+	
 		
 
 }
