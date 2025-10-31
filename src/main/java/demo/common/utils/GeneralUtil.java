@@ -14,5 +14,9 @@ public class GeneralUtil {
 		}
 		return XSSRequestWrapper.stripXSS(inputString);
 	}
+	
+	public static final String ERRCODE_REQUEST_SUCCESSFUL = "E000"; 
+	public static final String ERRCODE_REQUEST_FAIL = "E001";
+
 
 }
