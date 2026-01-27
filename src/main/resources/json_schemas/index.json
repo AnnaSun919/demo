@@ -1,1 +1,4 @@
-	{"POST /create-user": "createUser.json"}
+	{
+	"POST /create-user": "createUser.json",
+	"POST /login": "login.json"
+	}
