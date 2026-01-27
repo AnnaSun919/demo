@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import demo.common.PasswordHelper;
 import demo.common.json.CommonJson;
+import demo.common.utils.GeneralUtil;
 import demo.db.main.persistence.domain.UserDAO;
 import demo.db.main.persistence.repository.UserRepository;
 import demo.security.AppToken;
@@ -24,9 +25,10 @@ public class UserEventHandler implements UserService {
 	private TokenHelper tokenHelper;
 	
 	@Override
-    public String createUser(String Name, String Email, String Password) {
+    public CommonJson createUser(String Name, String Email, String Password) {
+		CommonJson object = new CommonJson();
+		
     	try {
-
     		UserDAO user = new UserDAO();
     		String uuid = UUID.randomUUID().toString();
     		user.setUserId(uuid);
@@ -38,21 +40,27 @@ public class UserEventHandler implements UserService {
     		
     		UserDAO existedUser = userRepository.findByName(Name);
     		
+    		
     		if(existedUser != null) {
-    			return "User Name has been registered";
+    			object.set("errCode", GeneralUtil.ERRCODE_REQUEST_FAIL);
+    			object.set("errMessage", "User is already existed");
+    			
+    			return object; 
     		}
    
     		userRepository.save(user);
-    		return "regristration success"; 
+    		object.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL);
+    		return object; 
     		
     	}catch (Exception e) {
-    		return "Error occurs " + e; 
+    		object.set("errCode", GeneralUtil.ERRCODE_REQUEST_FAIL);
+			object.set("errMessage", e);
+    		return object; 
     	}
     }
 
 	@Override
 	public CommonJson login(String username, String password) {
-		
 		UserDAO user = userRepository.findByName(username);
 		
 		if(user == null||!passwordHelper.checkPassword(password, user.getPassword())) {
@@ -60,13 +68,17 @@ public class UserEventHandler implements UserService {
 		}
 		
 		AppToken apptoken = new AppToken();
-		Instant expiresDate = Instant.now().plus(5, ChronoUnit.MINUTES);
+		Instant expiresDate = Instant.now().plus(500, ChronoUnit.MINUTES);
 		apptoken.setUserId(user.getUserId());
 		apptoken.setExpiresDate(expiresDate);
 		Optional<String> token = tokenHelper.encrypt(apptoken);
+		
+		//check admin role and group here
+		// if not admin // not in group == unauthorized 
 
 		return new CommonJson()
 			.set("auth", new CommonJson().set("token", token))
+			.set("success",true)
 			.set(
 				"admin",
 				new CommonJson()
@@ -74,13 +86,7 @@ public class UserEventHandler implements UserService {
 					.set("email", user.getEmail())
 					.set("name", user.getName())
 			);
-		
-		
-		//check admin role and group here
-		// if not admin // not in group == unauthorized 
 
 	}
-
-	
 
 }

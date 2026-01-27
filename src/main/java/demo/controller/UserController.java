@@ -13,42 +13,35 @@ import org.springframework.web.bind.annotation.RestController;
 import demo.common.PasswordHelper;
 import demo.common.json.CommonJson;
 import demo.service.UserService;
+import demo.common.utils.GeneralUtil;
 
 @RestController
 @ControllerAdvice
-public class UserController {
+public class UserController extends ApiController {
 	
 	@Autowired
 	private UserService userService;
-	
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public CommonJson UserLogin(HttpServletRequest request, @RequestBody CommonJson inputJson) throws Exception {
 		String username = StringUtils.isEmpty(inputJson.get("username"))? null : inputJson.get("username");
 		String password = StringUtils.isEmpty(inputJson.get("password"))? null : inputJson.get("password");
-		CommonJson isLogined = username != null && password != null? userService.login(username, password ) : null;
+		CommonJson user = username != null && password != null? userService.login(username, password ) : null;
 		
-		return isLogined;
+		//will have other user status
+		return user!=null ? 
+				user.set("errCode",GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL ): 
+				new CommonJson().set("errCode",GeneralUtil.ERRCODE_REQUEST_FAIL) ;
 	}
 	
-	@RequestMapping(value = "/createUser", method = RequestMethod.POST)
-	public String CreateUser(HttpServletRequest request, @RequestBody CommonJson inputJson) throws Exception {
+	@RequestMapping(value = "/create-user", method = RequestMethod.POST)
+	public CommonJson CreateUser(HttpServletRequest request, @RequestBody CommonJson inputJson) throws Exception {
+		jsonSchemaValidate(request,inputJson);
 		String username = StringUtils.isEmpty(inputJson.get("username"))? null : inputJson.get("username");
 		String email = StringUtils.isEmpty(inputJson.get("email"))? null : inputJson.get("email");
 		String password = StringUtils.isEmpty(inputJson.get("password"))? null : inputJson.get("password");
 		
-		if(username == null) {
-			return "User name is missing";
-		}
-		
-		if(email == null) {
-			return "Email is missing";
-		}
-		
-		if(password == null) {
-			return "Password is missing";
-		}
-		
-		return userService.createUser(username,email,password);
+		return userService.createUser(username, email, password);
 	}
 
 }
