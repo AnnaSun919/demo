@@ -15,30 +15,30 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import demo.security.AppToken;
 import demo.security.TokenHelper;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 	private static final String HEADER = "Authorization";
 	private static final String PREFIX = "Bearer ";
-	
-    private TokenHelper tokenHelper;
 
-    public TokenAuthenticationFilter(TokenHelper tokenHelper) {
-    		this.tokenHelper = tokenHelper;
+	private TokenHelper tokenHelper;
+
+	public TokenAuthenticationFilter(TokenHelper tokenHelper) {
+		this.tokenHelper = tokenHelper;
 	}
 
 	private static final Logger log = LoggerFactory.getLogger(TokenAuthenticationFilter.class);
-	
 
 	@Nullable
 	public static String getBearerToken(HttpServletRequest request) {
 		return StringUtils.defaultString(request.getHeader(HEADER)).replace(PREFIX, "");
 	}
 
+
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-		// Validate if token is present
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws ServletException, IOException {
+
 		if (!checkToken(request, response)) {
 			SecurityContextHolder.clearContext();
 			chain.doFilter(request, response);
@@ -47,28 +47,22 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
 		String tokenStr = getBearerToken(request);
 
-		if (tokenStr == null||!tokenHelper.decrypt(tokenStr).isPresent()) {
-			SecurityContextHolder.clearContext();
-			chain.doFilter(request, response);
-			return;
+		if (tokenStr != null) {
+			tokenHelper.decrypt(tokenStr).ifPresent(appToken -> {
+				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(appToken.getUserId(), null, null);
+				SecurityContextHolder.getContext().setAuthentication(auth);
+			});
 		}
 
-		AppToken apptoken = tokenHelper.decrypt(tokenStr).get();
-		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(apptoken.getUserId(), null, null);
-		SecurityContextHolder.getContext().setAuthentication(auth);
-		
+		SecurityContextHolder.clearContext();
 		chain.doFilter(request, response);
 	}
-	
+
 	private boolean checkToken(HttpServletRequest request, HttpServletResponse res) {
 		String authenticationHeader = request.getHeader(HEADER);
 		if (authenticationHeader == null || !authenticationHeader.startsWith(PREFIX))
 			return false;
 		return true;
 	}
-	
-
-
-
 
 }

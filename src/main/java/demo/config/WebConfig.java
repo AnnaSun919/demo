@@ -37,6 +37,7 @@ public class WebConfig implements WebMvcConfigurer {
 		http.csrf().disable()
 		.addFilterAfter(new TokenAuthenticationFilter(tokenHelper), UsernamePasswordAuthenticationFilter.class)
 		.authorizeRequests()
+//		.anyRequest().permitAll()
 		.antMatchers(HttpMethod.POST, "/login").permitAll()
 		.anyRequest().authenticated();
 
