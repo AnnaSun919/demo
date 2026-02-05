@@ -40,6 +40,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		if (!checkToken(request, response)) {
+			log.error("missing Token");
 			SecurityContextHolder.clearContext();
 			chain.doFilter(request, response);
 			return;
