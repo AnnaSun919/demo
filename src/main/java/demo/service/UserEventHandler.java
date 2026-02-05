@@ -61,10 +61,11 @@ public class UserEventHandler implements UserService {
 
 	@Override
 	public CommonJson login(String username, String password) {
+		CommonJson userJson = new CommonJson();
 		UserDAO user = userRepository.findByName(username);
-		
+
 		if(user == null||!passwordHelper.checkPassword(password, user.getPassword())) {
-			return null;
+			return userJson.set("success",Boolean.FALSE).set("errMsg", "No User");
 		}
 		
 		AppToken apptoken = new AppToken();
@@ -76,9 +77,9 @@ public class UserEventHandler implements UserService {
 		//check admin role and group here
 		// if not admin // not in group == unauthorized 
 
-		return new CommonJson()
+		return userJson
 			.set("auth", new CommonJson().set("token", token))
-			.set("success",true)
+			.set("success",Boolean.TRUE)
 			.set(
 				"admin",
 				new CommonJson()
