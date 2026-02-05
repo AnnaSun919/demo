@@ -55,7 +55,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 			});
 		}
 
-		SecurityContextHolder.clearContext();
 		chain.doFilter(request, response);
 	}
 
