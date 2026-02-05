@@ -1,4 +1,5 @@
 	{
 	"POST /create-user": "createUser.json",
-	"POST /login": "login.json"
+	"POST /login": "login.json",
+	"GET /bookings": "getBookings.json"
 	}

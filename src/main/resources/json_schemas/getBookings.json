@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Get /bookings",
+  "description": "Get Bookings",
+  "type": "object",
+  "properties": {
+    "body": {
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The ID for the user" }
+      },
+      "required": ["userId"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["body"],
+  "additionalProperties": false
+}

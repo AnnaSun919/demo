@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 
 import demo.common.PasswordHelper;
 import demo.security.TokenHelper;
+import demo.service.BookingEventHandler;
+import demo.service.BookingService;
 import demo.service.RoomEventHandler;
 import demo.service.RoomService;
 import demo.service.UserEventHandler;
@@ -26,6 +28,11 @@ public class CoreConfig {
     @Bean
     public RoomService RoomService() {
         return new RoomEventHandler();
+    }
+    
+    @Bean
+    public BookingService BookingService() {
+        return new BookingEventHandler();
     }
     
     @Bean

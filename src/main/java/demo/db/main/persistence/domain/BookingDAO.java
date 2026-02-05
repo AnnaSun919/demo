@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.SelectBeforeUpdate;
 
 @Entity
@@ -20,10 +21,10 @@ public class BookingDAO {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer bookingId;
 	
-	@Column(name="USER_ID" )
+	@Column(name="USERID" )
 	private String userId;
 	
-	@Column(name="ROOM_ID")
+	@Column(name="ROOMID")
 	private String roomId;	
 	
 	@Column(name="STATUS")
@@ -114,8 +115,6 @@ public class BookingDAO {
 
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-	
-	
+	}	
 
 }
