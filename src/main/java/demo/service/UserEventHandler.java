@@ -81,11 +81,12 @@ public class UserEventHandler implements UserService {
 			.set("auth", new CommonJson().set("token", token))
 			.set("success",Boolean.TRUE)
 			.set(
-				"admin",
+				"userInfo",
 				new CommonJson()
 					.set("id", user.getUserId())
 					.set("email", user.getEmail())
 					.set("name", user.getName())
+					.set("role", user.getRole())
 			);
 
 	}

@@ -33,6 +33,9 @@ public class UserDAO implements Serializable {
 	@Column(name="STATUS")
 	private String status;
 	
+	@Column(name="ROLE")
+	private String role;
+	
 	@Column(name="CREATED_AT")
 	private Timestamp createdAt;
 	
@@ -77,6 +80,14 @@ public class UserDAO implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public Timestamp getCreatedAt() {
