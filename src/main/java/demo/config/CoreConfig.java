@@ -11,6 +11,8 @@ import demo.service.RoomEventHandler;
 import demo.service.RoomService;
 import demo.service.UserEventHandler;
 import demo.service.UserService;
+import demo.service.GroupEventHandler;
+import demo.service.GroupService;
 
 @Configuration
 public class CoreConfig {
@@ -33,6 +35,11 @@ public class CoreConfig {
     @Bean
     public BookingService BookingService() {
         return new BookingEventHandler();
+    }
+    
+    @Bean
+    public GroupService GroupService() {
+        return new GroupEventHandler();
     }
     
     @Bean
