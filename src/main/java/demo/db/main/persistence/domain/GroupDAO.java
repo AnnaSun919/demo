@@ -26,8 +26,8 @@ public class GroupDAO {
 	@Column(name="NAME")
 	private String name;
 	
-	@Column(name="STATUS")
-	private String status;
+	@Column(name="DESCRITION")
+	private String description;
 	
 	@Column(name="CREATED_AT")
 	private Timestamp createdAt;
@@ -51,12 +51,12 @@ public class GroupDAO {
 		this.name = name;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Timestamp getCreatedAt() {
