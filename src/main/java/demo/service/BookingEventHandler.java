@@ -1,5 +1,7 @@
 package demo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import demo.db.main.persistence.domain.BookingDAO;
@@ -12,8 +14,14 @@ public class BookingEventHandler implements BookingService {
 	private  BookingRepository bookingRepository ;
 
 	@Override
-	public <List>BookingDAO getBookings(String userId) {
+	public List<BookingDAO> getUserBookings(String userId) {
 		return bookingRepository.findByUserId(userId); 
+	}
+
+	@Override
+	public List<BookingDAO> getAllBookings() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
