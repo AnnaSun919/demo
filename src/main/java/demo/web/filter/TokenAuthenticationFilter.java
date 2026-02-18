@@ -34,26 +34,26 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		return StringUtils.defaultString(request.getHeader(HEADER)).replace(PREFIX, "");
 	}
 
-
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
+		String tokenStr = getBearerToken(request);
 
-		if (!checkToken(request, response)) {
+		if (tokenStr == null || !checkToken(request, response)) {
 			log.error("missing Token");
 			SecurityContextHolder.clearContext();
 			chain.doFilter(request, response);
 			return;
 		}
 
-		String tokenStr = getBearerToken(request);
-
-		if (tokenStr != null) {
-			tokenHelper.decrypt(tokenStr).ifPresent(appToken -> {
-				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(appToken.getUserId(), null, null);
-				SecurityContextHolder.getContext().setAuthentication(auth);
-			});
-		}
+		tokenHelper.decrypt(tokenStr).ifPresentOrElse(appToken -> {
+			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(appToken.getUserId(),
+					null, null);
+			SecurityContextHolder.getContext().setAuthentication(auth);
+		}, () -> {
+			SecurityContextHolder.clearContext();
+			return;
+		});
 
 		chain.doFilter(request, response);
 	}
