@@ -2,17 +2,16 @@ package demo.common.json;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
-
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import demo.common.utils.GeneralUtil;
@@ -208,4 +207,8 @@ public class CommonJson implements Serializable {
 	    return json;
 	}
 	
+	public JSONArray getJSONArray(String key) {
+	    Object value = this.props.get(key);
+	    return new JSONArray((Collection<?>) value);
+	}
 }
