@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.SelectBeforeUpdate;
 
 @Entity
-@Table(name = "GROUP")
+@Table(name = "RM_GROUP")
 @SelectBeforeUpdate
 public class GroupDAO {
 	
@@ -26,7 +26,7 @@ public class GroupDAO {
 	@Column(name="NAME")
 	private String name;
 	
-	@Column(name="DESCRITION")
+	@Column(name="DESCRIPTION")
 	private String description;
 	
 	@Column(name="CREATED_AT")
