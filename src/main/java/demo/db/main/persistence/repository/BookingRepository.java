@@ -21,4 +21,9 @@ public interface BookingRepository extends JpaRepository<BookingDAO, Integer> {
 	int countOverlappingBookings(@Param("roomId") String roomId, @Param("startAt") Timestamp startAt,
 			@Param("endAt") Timestamp endAt);
 
+	@Query(value = "SELECT * FROM BOOKING " + "WHERE USERID = :userId " + "AND ROOMID = :roomId "
+			+ "AND START_AT < :endAt AND END_AT > :startAt "
+			+ "AND STATUS IN ('PENDING', 'APPROVED') LIMIT 1", nativeQuery = true)
+	BookingDAO findUserOverlappingBooking(@Param("userId") String userId, @Param("roomId") String roomId,
+			@Param("startAt") Timestamp startAt, @Param("endAt") Timestamp endAt);
 }

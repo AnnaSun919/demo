@@ -80,14 +80,21 @@ public class RoomEventHandler implements RoomService {
 			if(currentBookings >= Integer.parseInt(room.getCapacity())) {
 				throw new Exception("Room full for " + startAt + " - " + endAt);
 			}
-
+			
+			//avoid same user duplicate timebooking
+			if (bookingRepository.findUserOverlappingBooking(userId, roomId, startAt, endAt) != null) {
+			    throw new Exception("You already booked this room for this timeslot");
+			}
+			
 			//save booking
 			BookingDAO booking = new BookingDAO();
 			booking.setUserId(userId);
 			booking.setRoomId(roomId);
 			booking.setStatus("PENDING");
 			booking.setStartAt(startAt);
-			booking.setStartAt(endAt);
+			booking.setEndAt(endAt);
+			booking.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+			booking.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
 			bookingRepository.save(booking);
 
