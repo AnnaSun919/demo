@@ -22,7 +22,7 @@ public class RoomDAO implements Serializable {
 
 	@Id
 	@Column(name="ID")
-	private Integer roomId;
+	private String roomId;
 	
 	@Column(name="NAME")
 	private String name;
@@ -42,11 +42,11 @@ public class RoomDAO implements Serializable {
 	@Column(name="UPDATED_AT")
 	private Timestamp updatedAt;
 
-	public Integer getRoomId() {
+	public String getRoomId() {
 		return roomId;
 	}
 
-	public void setRoomId(Integer roomId) {
+	public void setRoomId(String roomId) {
 		this.roomId = roomId;
 	}
 
