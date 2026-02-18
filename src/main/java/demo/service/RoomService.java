@@ -9,7 +9,7 @@ public interface RoomService {
 
 	public CommonJson addRoom(String name, String description, String capacity, String status) throws Exception;
 	
-	public String bookRoom(String userId, String groupId, String startAt, String endAt);
+	public CommonJson bookRoom(List<CommonJson> inputJsonList)  throws Exception ;
 	
 	public List<RoomDAO> getRooms();
 	

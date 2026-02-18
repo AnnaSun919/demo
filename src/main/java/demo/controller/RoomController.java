@@ -65,21 +65,18 @@ public class RoomController {
 			@RequestParam("date") String date) throws Exception {
 		CommonJson timeslot = new CommonJson();
 
-		List<CommonJson> availableTimeslot = roomService.getRoomAvailableTimeSlot(roomId, "2026-06-02");
+		List<CommonJson> availableTimeslot = roomService.getRoomAvailableTimeSlot(roomId, date);
 
-		return timeslot.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("rooms", availableTimeslot)
+		return timeslot.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("timeslots", availableTimeslot)
 				.set("success", Boolean.TRUE);
 
 	}
 
-//	@RequestMapping(value = RestURIConstants.BOOKROOMS, method = RequestMethod.POST)
-//	public String BookRoom(HttpServletRequest request, @RequestBody CommonJson inputJson) throws Exception {
-//		String userId = StringUtils.isEmpty(inputJson.get("userId")) ? null : inputJson.get("userId");
-//		String groupId = StringUtils.isEmpty(inputJson.get("groupId")) ? null : inputJson.get("groupId");
-//		String startAt = StringUtils.isEmpty(inputJson.get("startAt")) ? null : inputJson.get("startAt");
-//		String endAt = StringUtils.isEmpty(inputJson.get("endAt")) ? null : inputJson.get("endAt");
-//
-//		return roomService.bookRoom(userId, groupId, startAt, endAt);
-//	}
+	@RequestMapping(value = RestURIConstants.USERBOOKROOMS, method = RequestMethod.POST)
+	public CommonJson BookRoom(HttpServletRequest request, @RequestBody List<CommonJson> inputJsonList)
+			throws Exception {
+
+		return roomService.bookRoom(inputJsonList);
+	}
 
 }
