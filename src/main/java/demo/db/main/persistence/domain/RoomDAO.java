@@ -24,9 +24,6 @@ public class RoomDAO implements Serializable {
 	@Column(name="ID")
 	private Integer roomId;
 	
-	@Column(name="GROUP_ID")
-	private String groupId;
-	
 	@Column(name="NAME")
 	private String name;
 	
@@ -51,14 +48,6 @@ public class RoomDAO implements Serializable {
 
 	public void setRoomId(Integer roomId) {
 		this.roomId = roomId;
-	}
-
-	public String getGroupId() {
-		return groupId;
-	}
-
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
 	}
 
 	public String getName() {
