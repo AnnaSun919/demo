@@ -1,6 +1,7 @@
 package demo.db.main.persistence.domain;
 
 import java.sql.Timestamp;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,13 +23,13 @@ public class TimeslotDAO {
 	private String roomId;	
 
     @Column(name = "DAY_TYPE")
-    private String dayTime;  
+    private String dayType;  
     
 	@Column(name="START_TIME")
-	private Timestamp startTime;
+	private LocalTime startTime;
 	
 	@Column(name="END_TIME")
-	private Timestamp endTime;
+	private LocalTime endTime;
 
     @Column(name = "interval_minutes")
     private Integer intervalMinutes;
@@ -49,27 +50,27 @@ public class TimeslotDAO {
 		this.roomId = roomId;
 	}
 
-	public String getDayTime() {
-		return dayTime;
+	public String getdayType() {
+		return dayType;
 	}
 
-	public void setDayTime(String dayTime) {
-		this.dayTime = dayTime;
+	public void setDayTime(String dayType) {
+		this.dayType = dayType;
 	}
 
-	public Timestamp getStartTime() {
+	public LocalTime getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Timestamp startTime) {
+	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
 
-	public Timestamp getEndTime() {
+	public LocalTime getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Timestamp endTime) {
+	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
 	}
 
