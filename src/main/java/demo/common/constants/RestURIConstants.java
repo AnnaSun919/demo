@@ -5,6 +5,12 @@ public class RestURIConstants {
 	//user 
 	public static final String CREATE_USER = "/create-user";
 	public static final String LOGIN = "/login";
+	
+	//room 
+	public static final String ROOMS = "admin/get-rooms";
+	public static final String ADDROOMS = "admin/add-rooms";
+	public static final String BOOKROOMS = "admin/book-rooms";
+	
 	//booking
 	public static final String BOOKINGS = "admin/bookings";
 	public static final String USERBOOKINGS = "user/bookings";
