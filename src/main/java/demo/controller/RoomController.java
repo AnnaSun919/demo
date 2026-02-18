@@ -4,10 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +17,6 @@ import demo.common.constants.RestURIConstants;
 import demo.common.json.CommonJson;
 import demo.common.utils.GeneralUtil;
 import demo.db.main.persistence.domain.RoomDAO;
-import demo.db.main.persistence.domain.TimeslotDAO;
 import demo.service.RoomService;
 
 @RestController
@@ -73,10 +71,12 @@ public class RoomController {
 	}
 
 	@RequestMapping(value = RestURIConstants.USERBOOKROOMS, method = RequestMethod.POST)
-	public CommonJson BookRoom(HttpServletRequest request, @RequestBody List<CommonJson> inputJsonList)
-			throws Exception {
+	public CommonJson BookRoom(HttpServletRequest request, @RequestBody CommonJson inputJson) throws Exception {
+		String userId = inputJson.get("userId");
+		String roomId = inputJson.get("roomId");
+		JSONArray timeslots = inputJson.getJSONArray("timeslots");
 
-		return roomService.bookRoom(inputJsonList);
+		return roomService.bookRoom(userId, roomId, timeslots);
 	}
 
 }

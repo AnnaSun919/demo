@@ -9,6 +9,8 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import demo.common.json.CommonJson;
@@ -52,8 +54,7 @@ public class RoomEventHandler implements RoomService {
 
 	// book one room with one or more timeslot(s).
 	@Transactional
-	public CommonJson bookRoom(List<CommonJson> inputJsonList) throws Exception {
-		String roomId = inputJsonList.get(0).get("roomId");
+	public CommonJson bookRoom(String userId, String roomId, JSONArray timeslots) throws Exception {
 
 		RoomDAO room = roomRepository.findByRoomId(roomId);
 
@@ -62,10 +63,11 @@ public class RoomEventHandler implements RoomService {
 			throw new Exception("Room not found");
 		}
 
-		for (CommonJson inputJson : inputJsonList) {
-			String userId = inputJson.get("userId");
-			Timestamp startAt = Timestamp.valueOf(inputJson.get("start_at"));
-			Timestamp endAt = Timestamp.valueOf(inputJson.get("end_at"));
+		for (int i = 0; i < timeslots.length(); i++) {
+			JSONObject slot = timeslots.getJSONObject(i);
+
+			Timestamp startAt = Timestamp.valueOf(slot.getString("start_at"));
+			Timestamp endAt = Timestamp.valueOf(slot.getString("end_at"));
 
 			// check endAt > startAt
 			if (startAt.after(endAt)) {
@@ -92,7 +94,6 @@ public class RoomEventHandler implements RoomService {
 		}
 
 		return new CommonJson().set("success", Boolean.TRUE);
-
 	}
 
 	public RoomDAO getRoomById(String roomId) {
