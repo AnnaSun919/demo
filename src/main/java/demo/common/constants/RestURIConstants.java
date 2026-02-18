@@ -7,7 +7,7 @@ public class RestURIConstants {
 	public static final String LOGIN = "/login";
 	
 	//room 
-	public static final String ROOMS = "admin/get-rooms";
+	public static final String ROOMS = "admin/rooms";
 	public static final String ADDROOMS = "admin/add-rooms";
 	public static final String BOOKROOMS = "admin/book-rooms";
 	
@@ -17,5 +17,6 @@ public class RestURIConstants {
 	
 	//group
 	public static final String CREATEGROUP = "admin/create-group";
+	public static final String GROUPS = "admin/groups";
 
 }
