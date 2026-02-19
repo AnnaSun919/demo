@@ -17,6 +17,6 @@ public interface RoomService {
 
 	public List<RoomDAO> findUserAvailableRooms(String userId);
 
-	public List<CommonJson> getRoomAvailableTimeSlot(String roomId, String string);
+	public List<CommonJson> getRoomAvailableTimeSlot(String userId, String roomId, String string);
 
 }

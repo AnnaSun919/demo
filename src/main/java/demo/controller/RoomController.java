@@ -59,11 +59,11 @@ public class RoomController {
 	}
 
 	@RequestMapping(value = RestURIConstants.USERROOMAVAILABLEROOMTIMESLOT, method = RequestMethod.GET)
-	public CommonJson getUserAvalibleRoomTimeslot(HttpServletRequest request, @RequestParam("roomId") String roomId,
+	public CommonJson getUserAvalibleRoomTimeslot(HttpServletRequest request, @RequestParam("userId") String userId, @RequestParam("roomId") String roomId,
 			@RequestParam("date") String date) throws Exception {
 		CommonJson timeslot = new CommonJson();
 
-		List<CommonJson> availableTimeslot = roomService.getRoomAvailableTimeSlot(roomId, date);
+		List<CommonJson> availableTimeslot = roomService.getRoomAvailableTimeSlot(userId, roomId, date);
 
 		return timeslot.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("timeslots", availableTimeslot)
 				.set("success", Boolean.TRUE);

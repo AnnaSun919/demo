@@ -119,7 +119,7 @@ public class RoomEventHandler implements RoomService {
 	}
 
 	// if endTime is 00:00 treat it as 24:00 (midnight) in db to avoid infinite loop
-	public List<CommonJson> getRoomAvailableTimeSlot(String roomId, String date) {
+	public List<CommonJson> getRoomAvailableTimeSlot(String userId, String roomId, String date) {
 		List<CommonJson> result = new ArrayList<>();
 
 		LocalDate localDate = LocalDate.parse(date);
@@ -132,24 +132,30 @@ public class RoomEventHandler implements RoomService {
 			return result;
 
 		RoomDAO room = roomRepository.findByRoomId(roomId);
+		int capacity = Integer.parseInt(room.getCapacity());
 
-		LocalTime startTime = timeslot.getStartTime();
-		LocalTime endTime = timeslot.getEndTime();
-		LocalTime slotEnd = timeslot.getEndTime();
+		 LocalTime startTime = timeslot.getStartTime();
+		 LocalTime endTime = timeslot.getEndTime();
 
 		while (startTime.isBefore(endTime)) {
-			slotEnd = startTime.plusMinutes(timeslot.getIntervalMinutes());
+			LocalTime slotEnd = startTime.plusMinutes(timeslot.getIntervalMinutes());
 
+			
+			Timestamp startTimestamp = Timestamp.valueOf(localDate.atTime(startTime));
+			Timestamp endTimestamp = Timestamp.valueOf(localDate.atTime(slotEnd));
+			
+			//check capacity
 			int bookingCount = bookingRepository.countByRoomIdAndStartAt(roomId,
 					Timestamp.valueOf(localDate.atTime(startTime)));
-
-			int capacity = Integer.parseInt(room.getCapacity());
+			//check if user has already booked the timeslot
+			boolean userBooked = bookingRepository.findUserOverlappingBooking(userId, roomId, startTimestamp,
+					endTimestamp) != null;
 
 			CommonJson slot = new CommonJson();
 			slot.set("date", date);
 			slot.set("slotStart", startTime.toString());
 			slot.set("slotEnd", slotEnd.toString());
-			slot.set("available", bookingCount < capacity);
+			slot.set("available", bookingCount < capacity && !userBooked);
 
 			result.add(slot);
 			startTime = slotEnd;
