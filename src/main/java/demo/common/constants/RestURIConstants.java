@@ -8,6 +8,7 @@ public class RestURIConstants {
 	
 	//room 
 	public static final String ROOMS = "admin/rooms";
+	public static final String ROOM = "admin/room";
 	public static final String ADDROOMS = "admin/add-room";
 	public static final String BOOKROOMS = "admin/book-rooms";
 	

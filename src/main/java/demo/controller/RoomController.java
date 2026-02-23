@@ -35,6 +35,16 @@ public class RoomController {
 		return rooms.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("rooms", listOfRooms).set("success",
 				Boolean.TRUE);
 	}
+	
+	@RequestMapping(value = "admin/room", method = RequestMethod.GET)
+	public CommonJson GetRoomById(HttpServletRequest request, @RequestParam("roomId") String roomId) throws Exception {
+		CommonJson rooms = new CommonJson();
+
+		CommonJson room = roomService.getRoomById(roomId);
+
+		return rooms.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("room", room ).set("success",
+				Boolean.TRUE);
+	}
 
 	@RequestMapping(value = RestURIConstants.ADDROOMS, method = RequestMethod.POST)
 	public CommonJson addRoom(HttpServletRequest request, @RequestBody CommonJson inputJson) throws Exception {

@@ -14,6 +14,8 @@ public interface RoomService {
 	public CommonJson bookRoom(String userId, String roomId, JSONArray timeslotsStr) throws Exception;
 
 	public List<RoomDAO> getRooms();
+	
+	public CommonJson getRoomById(String roomId);
 
 	public List<RoomDAO> findUserAvailableRooms(String userId);
 
