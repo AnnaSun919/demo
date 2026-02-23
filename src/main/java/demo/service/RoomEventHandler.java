@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import demo.common.json.CommonJson;
 import demo.db.main.persistence.domain.BookingDAO;
 import demo.db.main.persistence.domain.RoomDAO;
+import demo.db.main.persistence.domain.RoomGroupEligibilityDAO;
 import demo.db.main.persistence.domain.TimeslotDAO;
 import demo.db.main.persistence.repository.BookingRepository;
+import demo.db.main.persistence.repository.RoomGroupEligibilityRepository;
 import demo.db.main.persistence.repository.RoomRepository;
 import demo.db.main.persistence.repository.TimeslotRepository;
 
@@ -31,20 +33,40 @@ public class RoomEventHandler implements RoomService {
 
 	@Autowired
 	private BookingRepository bookingRepository;
+	
+	@Autowired
+	private RoomGroupEligibilityRepository roomGroupEligibilityRepository;
 
-	@Override
-	public CommonJson addRoom(String name, String description, String capacity, String status) throws Exception {
+	@Transactional
+	public CommonJson addRoom(String name, String description, String capacity, String status, String isPublic, JSONArray groupIds) throws Exception {
 		CommonJson result = new CommonJson();
 		RoomDAO room = new RoomDAO();
+		
+		//check if room name unique 
+		if(roomRepository.findByName(name)!=null) {
+			   throw new Exception("Room name is already taken ");
+		}
 
 		room.setRoomId(UUID.randomUUID().toString());
 		room.setName(name);
 		room.setDescription(description);
 		room.setCapacity(capacity);
 		room.setStatus(status);
+		room.setIsPublic(isPublic);
 		room.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		room.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-
+		
+		if (groupIds != null && groupIds.length() > 0) {
+		    for (int i = 0; i < groupIds.length(); i++) {
+		        RoomGroupEligibilityDAO eligibility = new RoomGroupEligibilityDAO();
+		        eligibility.setRoomId(room.getRoomId());
+		        eligibility.setGroupId(String.valueOf(groupIds.getInt(i)));
+		        eligibility.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		        eligibility.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		        roomGroupEligibilityRepository.save(eligibility);
+		    }
+		}
+		
 		roomRepository.save(room);
 
 		result.set("success", Boolean.TRUE);

@@ -16,30 +16,32 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 @Table(name = "ROOM")
 @SelectBeforeUpdate
 public class RoomDAO implements Serializable {
-	
 
 	private static final long serialVersionUID = 8353340778316173420L;
 
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	private String roomId;
-	
-	@Column(name="NAME")
+
+	@Column(name = "NAME")
 	private String name;
-	
-	@Column(name="DESCRIPTION")
+
+	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@Column(name="CAPACITY")
+	@Column(name = "CAPACITY")
 	private String capacity;
-	
-	@Column(name="STATUS")
+
+	@Column(name = "STATUS")
 	private String status;
-	
-	@Column(name="CREATED_AT")
+
+	@Column(name = "IS_PUBLIC")
+	private String isPublic;
+
+	@Column(name = "CREATED_AT")
 	private Timestamp createdAt;
-	
-	@Column(name="UPDATED_AT")
+
+	@Column(name = "UPDATED_AT")
 	private Timestamp updatedAt;
 
 	public String getRoomId() {
@@ -74,6 +76,21 @@ public class RoomDAO implements Serializable {
 		this.capacity = capacity;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getIsPubic() {
+		return isPublic;
+	}
+
+	public void setIsPublic(String isPublic) {
+		this.isPublic = isPublic;
+	}
 
 	public Timestamp getCreatedAt() {
 		return createdAt;
@@ -90,21 +107,5 @@ public class RoomDAO implements Serializable {
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	
-	
-
-	
-	
-
-
-	
 
 }

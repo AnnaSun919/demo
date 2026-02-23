@@ -9,7 +9,7 @@ import demo.db.main.persistence.domain.RoomDAO;
 
 public interface RoomService {
 
-	public CommonJson addRoom(String name, String description, String capacity, String status) throws Exception;
+	public CommonJson addRoom(String name, String description, String capacity, String status, String isPublic, JSONArray groupIds) throws Exception;
 
 	public CommonJson bookRoom(String userId, String roomId, JSONArray timeslotsStr) throws Exception;
 

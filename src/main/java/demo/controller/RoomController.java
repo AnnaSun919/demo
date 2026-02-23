@@ -42,8 +42,10 @@ public class RoomController {
 		String description = inputJson.get("description");
 		String capacity = inputJson.get("capacity");
 		String status = inputJson.get("status");
+		String isPublic = inputJson.get("isPublic");
+		JSONArray groupIds = inputJson.getJSONArray("groupIds");
 
-		return roomService.addRoom(name, description, capacity, status);
+		return roomService.addRoom(name, description, capacity, status, isPublic, groupIds);
 	}
 
 	@RequestMapping(value = RestURIConstants.USERAVAILABLEROOMS, method = RequestMethod.GET)
