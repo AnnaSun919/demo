@@ -22,5 +22,8 @@ public interface RoomService {
 	public List<CommonJson> getRoomAvailableTimeSlot(String userId, String roomId, String string);
 	
 	public CommonJson deleteRoom(String roomId) throws Exception;
+	
+	public CommonJson editRoom(String roomId,String description, String capacity, String status, String isPublic, JSONArray groupIds) throws Exception;
+
 
 }

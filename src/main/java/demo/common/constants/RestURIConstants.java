@@ -11,6 +11,7 @@ public class RestURIConstants {
 	public static final String ROOM = "admin/room";
 	public static final String ADDROOMS = "admin/add-room";
 	public static final String BOOKROOMS = "admin/book-rooms";
+	public static final String EDITROOM = "admin/edit-room";
 	public static final String DELETEROOM = "admin/delete-room";
 	
 	//booking

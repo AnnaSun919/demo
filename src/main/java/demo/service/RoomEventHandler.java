@@ -195,6 +195,48 @@ public class RoomEventHandler implements RoomService {
 
 		return result;
 	}
+	
+	@Transactional
+	public CommonJson editRoom(String roomId, String description, String capacity, String status, String isPublic, JSONArray groupIds) throws Exception {
+	    CommonJson result = new CommonJson();
+
+	    RoomDAO room = roomRepository.findByRoomId(roomId);
+	    if (room == null) {
+	        throw new Exception("Room not found");
+	    }
+
+	    room.setDescription(description);
+	    room.setCapacity(capacity);
+	    room.setStatus(status);
+	    room.setIsPublic(isPublic);
+	    room.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+	    // Remove existing group eligibilities and re-add
+	    roomGroupEligibilityRepository.deleteByRoomId(roomId);
+	    
+	    List<Integer> listofgroupId = new ArrayList();
+
+	    if (groupIds != null && groupIds.length() > 0) {
+	        for (int i = 0; i < groupIds.length(); i++) {
+	            RoomGroupEligibilityDAO eligibility = new RoomGroupEligibilityDAO();
+	            eligibility.setRoomId(room.getRoomId());
+	            eligibility.setGroupId(String.valueOf(groupIds.getInt(i)));
+	            eligibility.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+	            eligibility.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+	            roomGroupEligibilityRepository.save(eligibility);
+	            listofgroupId.add(groupIds.getInt(i));
+	        }
+	    }
+
+	    roomRepository.save(room);
+
+	    result.set("description", description);
+	    result.set("capacity", capacity);
+	    result.set("status", status);
+	    result.set("isPublic", isPublic);
+	    result.set("groupIds", listofgroupId);
+	    return result;
+	}
 
 	@Transactional
 	public CommonJson deleteRoom(String roomId) throws Exception {

@@ -93,17 +93,32 @@ public class RoomController {
 
 		return roomService.bookRoom(userId, roomId, timeslots);
 	}
-	
-	@RequestMapping(value = RestURIConstants.DELETEROOM , method = RequestMethod.DELETE)
+
+	@RequestMapping(value = RestURIConstants.EDITROOM , method = RequestMethod.PUT)
+	public CommonJson editRoom(HttpServletRequest request, @RequestParam String roomId, @RequestBody CommonJson inputJson) throws Exception {
+		CommonJson resultJson =new CommonJson();
+		String description = inputJson.get("description");
+		String capacity = inputJson.get("capacity");
+		String status = inputJson.get("status");
+		String isPublic = String.valueOf(inputJson.getOrDefault("isPublic", (Object) null));
+		JSONArray groupIds = inputJson.getJSONArray("groupIds"); 
+
+		CommonJson room = roomService.editRoom(roomId, description, capacity, status, isPublic, groupIds);
+
+
+		resultJson.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("success", Boolean.TRUE).set("room",room);
+		return resultJson;
+	}
+
+	@RequestMapping(value = RestURIConstants.DELETEROOM, method = RequestMethod.DELETE)
 	public CommonJson deleteRoom(HttpServletRequest request, @RequestParam("roomId") String roomId) throws Exception {
-	    CommonJson resultJson = new CommonJson();
+		CommonJson resultJson = new CommonJson();
 
-	    	roomService.deleteRoom(roomId);
+		roomService.deleteRoom(roomId);
 
-	        resultJson.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("success", Boolean.TRUE);
+		resultJson.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("success", Boolean.TRUE);
 
-
-	    return resultJson;
+		return resultJson;
 	}
 
 }
