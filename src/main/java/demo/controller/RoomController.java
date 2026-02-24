@@ -36,7 +36,7 @@ public class RoomController {
 				Boolean.TRUE);
 	}
 	
-	@RequestMapping(value = "admin/room", method = RequestMethod.GET)
+	@RequestMapping(value = RestURIConstants.ROOM , method = RequestMethod.GET)
 	public CommonJson GetRoomById(HttpServletRequest request, @RequestParam("roomId") String roomId) throws Exception {
 		CommonJson rooms = new CommonJson();
 

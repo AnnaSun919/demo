@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -124,8 +125,18 @@ public class RoomEventHandler implements RoomService {
 		return new CommonJson().set("success", Boolean.TRUE);
 	}
 
-	public RoomDAO getRoomById(String roomId) {
-		return roomRepository.findByRoomId(roomId);
+	public CommonJson getRoomById(String roomId) {
+	    CommonJson result = new CommonJson();
+	    RoomDAO room = roomRepository.findByRoomId(roomId);
+	    
+	    List<RoomGroupEligibilityDAO> eligibilities = roomGroupEligibilityRepository.findByRoomId(roomId);
+	    List<Integer> groupIds = eligibilities.stream()
+	        .map(e -> Integer.parseInt(e.getGroupId()))
+	        .collect(Collectors.toList());
+	    
+	    result.set("room", room);
+	    result.set("groupIds", groupIds);
+	    return result;
 	}
 
 	@Override
