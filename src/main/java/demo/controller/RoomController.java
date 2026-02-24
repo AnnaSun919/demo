@@ -93,5 +93,17 @@ public class RoomController {
 
 		return roomService.bookRoom(userId, roomId, timeslots);
 	}
+	
+	@RequestMapping(value = RestURIConstants.DELETEROOM , method = RequestMethod.DELETE)
+	public CommonJson deleteRoom(HttpServletRequest request, @RequestParam("roomId") String roomId) throws Exception {
+	    CommonJson resultJson = new CommonJson();
+
+	    	roomService.deleteRoom(roomId);
+
+	        resultJson.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("success", Boolean.TRUE);
+
+
+	    return resultJson;
+	}
 
 }

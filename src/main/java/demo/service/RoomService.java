@@ -20,5 +20,7 @@ public interface RoomService {
 	public List<RoomDAO> findUserAvailableRooms(String userId);
 
 	public List<CommonJson> getRoomAvailableTimeSlot(String userId, String roomId, String string);
+	
+	public CommonJson deleteRoom(String roomId) throws Exception;
 
 }

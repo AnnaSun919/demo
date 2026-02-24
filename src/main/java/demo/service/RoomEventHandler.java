@@ -185,4 +185,22 @@ public class RoomEventHandler implements RoomService {
 		return result;
 	}
 
+	@Transactional
+	public CommonJson deleteRoom(String roomId) throws Exception {
+		CommonJson resultJson = new CommonJson();
+		
+	    RoomDAO room = roomRepository.findByRoomId(roomId);
+	    
+        if (room == null) {
+    		throw new Exception("Room not found");
+        }
+
+        // Delete the room
+        roomRepository.deleteByRoomId(roomId);
+        // also the room_group_eligibility;
+        roomGroupEligibilityRepository.deleteByRoomId(roomId);
+        
+		return resultJson.set("success", true);
+	}
+
 }
