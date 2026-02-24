@@ -52,10 +52,13 @@ public class RoomController {
 		String description = inputJson.get("description");
 		String capacity = inputJson.get("capacity");
 		String status = inputJson.get("status");
-		String isPublic = inputJson.get("isPublic");
+		String isPublic = String.valueOf(inputJson.getOrDefault("isPublic", (Object) null));
 		JSONArray groupIds = inputJson.getJSONArray("groupIds");
+		
+		CommonJson result = roomService.addRoom(name, description, capacity, status, isPublic, groupIds);
 
-		return roomService.addRoom(name, description, capacity, status, isPublic, groupIds);
+		return result.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("success",
+				Boolean.TRUE);
 	}
 
 	@RequestMapping(value = RestURIConstants.USERAVAILABLEROOMS, method = RequestMethod.GET)

@@ -84,7 +84,7 @@ public class RoomDAO implements Serializable {
 		this.status = status;
 	}
 
-	public String getIsPubic() {
+	public String getIsPublic() {
 		return isPublic;
 	}
 

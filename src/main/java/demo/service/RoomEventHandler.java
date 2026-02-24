@@ -69,8 +69,7 @@ public class RoomEventHandler implements RoomService {
 		
 		roomRepository.save(room);
 
-		result.set("success", Boolean.TRUE);
-
+		result.set("room", room);
 		return result;
 	}
 
