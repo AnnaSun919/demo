@@ -7,5 +7,7 @@ import demo.db.main.persistence.domain.TimeslotDAO;
 public interface TimeslotRepository extends JpaRepository<TimeslotDAO, Integer> {
 	
 	public TimeslotDAO findByRoomIdAndDayType(String roomId, String dayType);
+
+	public void deleteByRoomId(String roomId);
 	
 }

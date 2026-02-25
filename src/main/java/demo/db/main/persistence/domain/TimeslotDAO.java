@@ -1,6 +1,5 @@
 package demo.db.main.persistence.domain;
 
-import java.sql.Timestamp;
 import java.time.LocalTime;
 
 import javax.persistence.Column;
@@ -15,24 +14,21 @@ import javax.persistence.Table;
 public class TimeslotDAO {
 
 	@Id
-	@Column(name="ID")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer timeslotId;
-	
-	@Column(name="ROOMID")
-	private String roomId;	
 
-    @Column(name = "DAY_TYPE")
-    private String dayType;  
-    
-	@Column(name="START_TIME")
+	@Column(name = "ROOM_ID")
+	private String roomId;
+
+	@Column(name = "DAY_TYPE")
+	private String dayType;
+
+	@Column(name = "START_TIME")
 	private LocalTime startTime;
-	
-	@Column(name="END_TIME")
-	private LocalTime endTime;
 
-    @Column(name = "interval_minutes")
-    private Integer intervalMinutes;
+	@Column(name = "END_TIME")
+	private LocalTime endTime;
 
 	public Integer getTimeslotId() {
 		return timeslotId;
@@ -50,11 +46,11 @@ public class TimeslotDAO {
 		this.roomId = roomId;
 	}
 
-	public String getdayType() {
+	public String getDayType() {
 		return dayType;
 	}
 
-	public void setDayTime(String dayType) {
+	public void setDayType(String dayType) {
 		this.dayType = dayType;
 	}
 
@@ -74,17 +70,4 @@ public class TimeslotDAO {
 		this.endTime = endTime;
 	}
 
-	public Integer getIntervalMinutes() {
-		return intervalMinutes;
-	}
-
-	public void setIntervalMinutes(Integer intervalMinutes) {
-		this.intervalMinutes = intervalMinutes;
-	}
-
-
-    
-    
-
- 
 }

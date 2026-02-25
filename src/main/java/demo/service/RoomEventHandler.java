@@ -34,18 +34,19 @@ public class RoomEventHandler implements RoomService {
 
 	@Autowired
 	private BookingRepository bookingRepository;
-	
+
 	@Autowired
 	private RoomGroupEligibilityRepository roomGroupEligibilityRepository;
 
 	@Transactional
-	public CommonJson addRoom(String name, String description, String capacity, String status, String isPublic, JSONArray groupIds) throws Exception {
+	public CommonJson addRoom(String name, String description, String capacity, String status, String isPublic,
+			String intervalMins, JSONArray groupIds, JSONArray timeslots) throws Exception {
 		CommonJson result = new CommonJson();
 		RoomDAO room = new RoomDAO();
-		
-		//check if room name unique 
-		if(roomRepository.findByName(name)!=null) {
-			   throw new Exception("Room name is already taken ");
+
+		// check if room name unique
+		if (roomRepository.findByName(name) != null) {
+			throw new Exception("Room name is already taken ");
 		}
 
 		room.setRoomId(UUID.randomUUID().toString());
@@ -54,20 +55,35 @@ public class RoomEventHandler implements RoomService {
 		room.setCapacity(capacity);
 		room.setStatus(status);
 		room.setIsPublic(isPublic);
+		room.setIntervalMinutes(Integer.parseInt(intervalMins));
 		room.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		room.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		
+
+		// add group eligiblity
 		if (groupIds != null && groupIds.length() > 0) {
-		    for (int i = 0; i < groupIds.length(); i++) {
-		        RoomGroupEligibilityDAO eligibility = new RoomGroupEligibilityDAO();
-		        eligibility.setRoomId(room.getRoomId());
-		        eligibility.setGroupId(String.valueOf(groupIds.getInt(i)));
-		        eligibility.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		        eligibility.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		        roomGroupEligibilityRepository.save(eligibility);
-		    }
+			for (int i = 0; i < groupIds.length(); i++) {
+				RoomGroupEligibilityDAO eligibility = new RoomGroupEligibilityDAO();
+				eligibility.setRoomId(room.getRoomId());
+				eligibility.setGroupId(String.valueOf(groupIds.getInt(i)));
+				eligibility.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+				eligibility.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+				roomGroupEligibilityRepository.save(eligibility);
+			}
 		}
-		
+
+		// add available timelsot
+		if (timeslots != null && timeslots.length() > 0) {
+			for (int i = 0; i < timeslots.length(); i++) {
+				JSONObject ts = timeslots.getJSONObject(i);
+				TimeslotDAO timeslot = new TimeslotDAO();
+				timeslot.setRoomId(room.getRoomId());
+				timeslot.setDayType(ts.getString("dayType"));
+				timeslot.setStartTime(LocalTime.parse(ts.getString("startTime")));
+				timeslot.setEndTime(LocalTime.parse(ts.getString("endTime")));
+				timeslotRepository.save(timeslot);
+			}
+		}
+
 		roomRepository.save(room);
 
 		result.set("room", room);
@@ -98,17 +114,17 @@ public class RoomEventHandler implements RoomService {
 
 			// check if enuf capacity
 			int currentBookings = bookingRepository.countOverlappingBookings(roomId, startAt, endAt);
-			
-			if(currentBookings >= Integer.parseInt(room.getCapacity())) {
+
+			if (currentBookings >= Integer.parseInt(room.getCapacity())) {
 				throw new Exception("Room full for " + startAt + " - " + endAt);
 			}
-			
-			//avoid same user duplicate timebooking
+
+			// avoid same user duplicate timebooking
 			if (bookingRepository.findUserOverlappingBooking(userId, roomId, startAt, endAt) != null) {
-			    throw new Exception("You already booked this room for this timeslot");
+				throw new Exception("You already booked this room for this timeslot");
 			}
-			
-			//save booking
+
+			// save booking
 			BookingDAO booking = new BookingDAO();
 			booking.setUserId(userId);
 			booking.setRoomId(roomId);
@@ -166,20 +182,19 @@ public class RoomEventHandler implements RoomService {
 		RoomDAO room = roomRepository.findByRoomId(roomId);
 		int capacity = Integer.parseInt(room.getCapacity());
 
-		 LocalTime startTime = timeslot.getStartTime();
-		 LocalTime endTime = timeslot.getEndTime();
+		LocalTime startTime = timeslot.getStartTime();
+		LocalTime endTime = timeslot.getEndTime();
 
 		while (startTime.isBefore(endTime)) {
-			LocalTime slotEnd = startTime.plusMinutes(timeslot.getIntervalMinutes());
+			LocalTime slotEnd = startTime.plusMinutes(room.getIntervalMinutes());
 
-			
 			Timestamp startTimestamp = Timestamp.valueOf(localDate.atTime(startTime));
 			Timestamp endTimestamp = Timestamp.valueOf(localDate.atTime(slotEnd));
-			
-			//check capacity
+
+			// check capacity
 			int bookingCount = bookingRepository.countByRoomIdAndStartAt(roomId,
 					Timestamp.valueOf(localDate.atTime(startTime)));
-			//check if user has already booked the timeslot
+			// check if user has already booked the timeslot
 			boolean userBooked = bookingRepository.findUserOverlappingBooking(userId, roomId, startTimestamp,
 					endTimestamp) != null;
 
@@ -195,64 +210,80 @@ public class RoomEventHandler implements RoomService {
 
 		return result;
 	}
-	
+
 	@Transactional
-	public CommonJson editRoom(String roomId, String description, String capacity, String status, String isPublic, JSONArray groupIds) throws Exception {
-	    CommonJson result = new CommonJson();
+	public CommonJson editRoom(String roomId, String description, String capacity, String status, String isPublic,
+			String intervalMins, JSONArray groupIds, JSONArray timeslots) throws Exception {
+		CommonJson result = new CommonJson();
 
-	    RoomDAO room = roomRepository.findByRoomId(roomId);
-	    if (room == null) {
-	        throw new Exception("Room not found");
-	    }
+		RoomDAO room = roomRepository.findByRoomId(roomId);
+		if (room == null) {
+			throw new Exception("Room not found");
+		}
 
-	    room.setDescription(description);
-	    room.setCapacity(capacity);
-	    room.setStatus(status);
-	    room.setIsPublic(isPublic);
-	    room.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		room.setDescription(description);
+		room.setCapacity(capacity);
+		room.setStatus(status);
+		room.setIsPublic(isPublic);
+		room.setIntervalMinutes(Integer.parseInt(intervalMins));
+		room.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
-	    // Remove existing group eligibilities and re-add
-	    roomGroupEligibilityRepository.deleteByRoomId(roomId);
-	    
-	    List<Integer> listofgroupId = new ArrayList();
+		// Remove existing group eligibilities and re-add
+		roomGroupEligibilityRepository.deleteByRoomId(roomId);
 
-	    if (groupIds != null && groupIds.length() > 0) {
-	        for (int i = 0; i < groupIds.length(); i++) {
-	            RoomGroupEligibilityDAO eligibility = new RoomGroupEligibilityDAO();
-	            eligibility.setRoomId(room.getRoomId());
-	            eligibility.setGroupId(String.valueOf(groupIds.getInt(i)));
-	            eligibility.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-	            eligibility.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-	            roomGroupEligibilityRepository.save(eligibility);
-	            listofgroupId.add(groupIds.getInt(i));
-	        }
-	    }
+		List<Integer> listofgroupId = new ArrayList();
 
-	    roomRepository.save(room);
+		if (groupIds != null && groupIds.length() > 0) {
+			for (int i = 0; i < groupIds.length(); i++) {
+				RoomGroupEligibilityDAO eligibility = new RoomGroupEligibilityDAO();
+				eligibility.setRoomId(room.getRoomId());
+				eligibility.setGroupId(String.valueOf(groupIds.getInt(i)));
+				eligibility.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+				eligibility.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+				roomGroupEligibilityRepository.save(eligibility);
+				listofgroupId.add(groupIds.getInt(i));
+			}
+		}
 
-	    result.set("description", description);
-	    result.set("capacity", capacity);
-	    result.set("status", status);
-	    result.set("isPublic", isPublic);
-	    result.set("groupIds", listofgroupId);
-	    return result;
+		timeslotRepository.deleteByRoomId(roomId);
+
+		if (timeslots != null && timeslots.length() > 0) {
+			for (int i = 0; i < timeslots.length(); i++) {
+				JSONObject ts = timeslots.getJSONObject(i);
+				TimeslotDAO timeslot = new TimeslotDAO();
+				timeslot.setRoomId(room.getRoomId());
+				timeslot.setDayType(ts.getString("dayType"));
+				timeslot.setStartTime(LocalTime.parse(ts.getString("startTime")));
+				timeslot.setEndTime(LocalTime.parse(ts.getString("endTime")));
+				timeslotRepository.save(timeslot);
+			}
+		}
+
+		roomRepository.save(room);
+
+		result.set("description", description);
+		result.set("capacity", capacity);
+		result.set("status", status);
+		result.set("isPublic", isPublic);
+		result.set("groupIds", listofgroupId);
+		return result;
 	}
 
 	@Transactional
 	public CommonJson deleteRoom(String roomId) throws Exception {
 		CommonJson resultJson = new CommonJson();
-		
-	    RoomDAO room = roomRepository.findByRoomId(roomId);
-	    
-        if (room == null) {
-    		throw new Exception("Room not found");
-        }
 
-        // Delete the room
-        roomRepository.deleteByRoomId(roomId);
-        // also the room_group_eligibility;
-        roomGroupEligibilityRepository.deleteByRoomId(roomId);
-        
+		RoomDAO room = roomRepository.findByRoomId(roomId);
+
+		if (room == null) {
+			throw new Exception("Room not found");
+		}
+
+		// Delete the room
+		roomRepository.deleteByRoomId(roomId);
+		// also the room_group_eligibility;
+		roomGroupEligibilityRepository.deleteByRoomId(roomId);
+
 		return resultJson.set("success", true);
 	}
 

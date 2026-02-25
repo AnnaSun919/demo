@@ -38,6 +38,9 @@ public class RoomDAO implements Serializable {
 	@Column(name = "IS_PUBLIC")
 	private String isPublic;
 
+	@Column(name = "INTERVAL_MINUTES")
+	private Integer intervalMinutes;
+
 	@Column(name = "CREATED_AT")
 	private Timestamp createdAt;
 
@@ -90,6 +93,14 @@ public class RoomDAO implements Serializable {
 
 	public void setIsPublic(String isPublic) {
 		this.isPublic = isPublic;
+	}
+
+	public Integer getIntervalMinutes() {
+		return intervalMinutes;
+	}
+
+	public void setIntervalMinutes(Integer intervalMinutes) {
+		this.intervalMinutes = intervalMinutes;
 	}
 
 	public Timestamp getCreatedAt() {

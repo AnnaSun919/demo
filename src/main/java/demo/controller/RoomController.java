@@ -35,30 +35,33 @@ public class RoomController {
 		return rooms.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("rooms", listOfRooms).set("success",
 				Boolean.TRUE);
 	}
-	
-	@RequestMapping(value = RestURIConstants.ROOM , method = RequestMethod.GET)
+
+	@RequestMapping(value = RestURIConstants.ROOM, method = RequestMethod.GET)
 	public CommonJson GetRoomById(HttpServletRequest request, @RequestParam("roomId") String roomId) throws Exception {
 		CommonJson rooms = new CommonJson();
 
 		CommonJson room = roomService.getRoomById(roomId);
 
-		return rooms.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("room", room ).set("success",
+		return rooms.set("room", room).set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("success",
 				Boolean.TRUE);
 	}
 
 	@RequestMapping(value = RestURIConstants.ADDROOMS, method = RequestMethod.POST)
 	public CommonJson addRoom(HttpServletRequest request, @RequestBody CommonJson inputJson) throws Exception {
+
 		String name = inputJson.get("name");
 		String description = inputJson.get("description");
 		String capacity = inputJson.get("capacity");
 		String status = inputJson.get("status");
 		String isPublic = String.valueOf(inputJson.getOrDefault("isPublic", (Object) null));
+		String intervalMins = inputJson.get("intervalMins");
 		JSONArray groupIds = inputJson.getJSONArray("groupIds");
-		
-		CommonJson result = roomService.addRoom(name, description, capacity, status, isPublic, groupIds);
+		JSONArray timeslots = inputJson.getJSONArray("timeslots");
 
-		return result.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("success",
-				Boolean.TRUE);
+		CommonJson result = roomService.addRoom(name, description, capacity, status, isPublic, intervalMins, groupIds,
+				timeslots);
+
+		return result.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("success", Boolean.TRUE);
 	}
 
 	@RequestMapping(value = RestURIConstants.USERAVAILABLEROOMS, method = RequestMethod.GET)
@@ -94,19 +97,23 @@ public class RoomController {
 		return roomService.bookRoom(userId, roomId, timeslots);
 	}
 
-	@RequestMapping(value = RestURIConstants.EDITROOM , method = RequestMethod.PUT)
-	public CommonJson editRoom(HttpServletRequest request, @RequestParam String roomId, @RequestBody CommonJson inputJson) throws Exception {
-		CommonJson resultJson =new CommonJson();
+	@RequestMapping(value = RestURIConstants.EDITROOM, method = RequestMethod.PUT)
+	public CommonJson editRoom(HttpServletRequest request, @RequestParam String roomId,
+			@RequestBody CommonJson inputJson) throws Exception {
+		CommonJson resultJson = new CommonJson();
 		String description = inputJson.get("description");
 		String capacity = inputJson.get("capacity");
 		String status = inputJson.get("status");
 		String isPublic = String.valueOf(inputJson.getOrDefault("isPublic", (Object) null));
-		JSONArray groupIds = inputJson.getJSONArray("groupIds"); 
+		String intervalMin = inputJson.get("intervalMins");
+		JSONArray groupIds = inputJson.getJSONArray("groupIds");
+		JSONArray timeslots = inputJson.getJSONArray("timeslots");
 
-		CommonJson room = roomService.editRoom(roomId, description, capacity, status, isPublic, groupIds);
+		CommonJson room = roomService.editRoom(roomId, description, capacity, status, isPublic, intervalMin, groupIds,
+				timeslots);
 
-
-		resultJson.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("success", Boolean.TRUE).set("room",room);
+		resultJson.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("success", Boolean.TRUE).set("room",
+				room);
 		return resultJson;
 	}
 
