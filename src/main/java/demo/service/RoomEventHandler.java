@@ -142,17 +142,23 @@ public class RoomEventHandler implements RoomService {
 	}
 
 	public CommonJson getRoomById(String roomId) {
-	    CommonJson result = new CommonJson();
-	    RoomDAO room = roomRepository.findByRoomId(roomId);
-	    
-	    List<RoomGroupEligibilityDAO> eligibilities = roomGroupEligibilityRepository.findByRoomId(roomId);
-	    List<Integer> groupIds = eligibilities.stream()
-	        .map(e -> Integer.parseInt(e.getGroupId()))
-	        .collect(Collectors.toList());
-	    
-	    result.set("room", room);
-	    result.set("groupIds", groupIds);
-	    return result;
+		CommonJson result = new CommonJson();
+		RoomDAO room = roomRepository.findByRoomId(roomId);
+
+		List<RoomGroupEligibilityDAO> eligibilities = roomGroupEligibilityRepository.findByRoomId(roomId);
+		List<Integer> groupIds = eligibilities.stream().map(e -> Integer.parseInt(e.getGroupId()))
+				.collect(Collectors.toList());
+		List<TimeslotDAO> timeslots = timeslotRepository.findByRoomId(roomId);
+
+		result.set("roomId", room.getRoomId());
+		result.set("name", room.getName());
+		result.set("description", room.getDescription());
+		result.set("capacity", room.getCapacity());
+		result.set("status", room.getStatus());
+		result.set("isPublic", Boolean.valueOf(room.getIsPublic()));
+		result.set("groupIds", groupIds);
+		result.set("timeslots", timeslots);
+		return result;
 	}
 
 	@Override

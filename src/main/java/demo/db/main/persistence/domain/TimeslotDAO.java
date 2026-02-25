@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "TIMESLOT")
 public class TimeslotDAO {
@@ -24,9 +26,11 @@ public class TimeslotDAO {
 	@Column(name = "DAY_TYPE")
 	private String dayType;
 
+	@JsonFormat(pattern = "HH:mm")
 	@Column(name = "START_TIME")
 	private LocalTime startTime;
 
+	@JsonFormat(pattern = "HH:mm")
 	@Column(name = "END_TIME")
 	private LocalTime endTime;
 
