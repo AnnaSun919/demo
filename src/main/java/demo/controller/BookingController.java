@@ -23,48 +23,55 @@ public class BookingController extends ApiController {
 
 	@Autowired
 	private BookingService bookingService;
-	
-	@RequestMapping(value = RestURIConstants.BOOKINGS , method = RequestMethod.GET)
-	public CommonJson getAllBookings(HttpServletRequest request, @RequestParam("userId") String userId) throws Exception {
+
+	@RequestMapping(value = RestURIConstants.BOOKINGS, method = RequestMethod.GET)
+	public CommonJson getAllBookings(HttpServletRequest request) throws Exception {
 //		jsonSchemaValidate(request,userId);
 		CommonJson bookings = new CommonJson();
 
-		List<BookingDAO>  listOfBookings = bookingService.getAllBookings();
+		List<BookingDAO> listOfBookings = bookingService.getAllBookings();
 
-		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL)
-				.set("bookings", listOfBookings)
+		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("bookings", listOfBookings)
 				.set("success", Boolean.TRUE);
 
 	}
-	
-	
 
 	@RequestMapping(value = RestURIConstants.MYBOOKINGS, method = RequestMethod.GET)
-	public CommonJson getUserBookings(HttpServletRequest request, @RequestParam("userId") String userId) throws Exception {
+	public CommonJson getUserBookings(HttpServletRequest request, @RequestParam("userId") String userId)
+			throws Exception {
 //		jsonSchemaValidate(request,userId);
 		CommonJson bookings = new CommonJson();
 
 		List<CommonJson> listOfBookings = bookingService.getMyBookings(userId);
 
-		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL)
-				.set("bookings", listOfBookings)
+		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("bookings", listOfBookings)
 				.set("success", Boolean.TRUE);
 
 	}
-	
+
 	@RequestMapping(value = RestURIConstants.CANCELBOOKING, method = RequestMethod.PATCH)
-	public CommonJson cancelUserBookings(HttpServletRequest request, @RequestParam("bookingId") String bookingId) throws Exception {
+	public CommonJson cancelUserBookings(HttpServletRequest request, @RequestParam("bookingId") String bookingId)
+			throws Exception {
 //		jsonSchemaValidate(request,userId);
 		CommonJson bookings = new CommonJson();
 
-		BookingDAO Booking = bookingService.cancelBooking(bookingId);
+		BookingDAO result = bookingService.cancelBooking(bookingId);
 
-		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL)
-				.set("booking", Booking)
-				.set("success", Boolean.TRUE);
+		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("booking", result).set("success",
+				Boolean.TRUE);
 
 	}
-	
-	
+
+	@RequestMapping(value = RestURIConstants.PENDINGAPPROVAL , method = RequestMethod.GET)
+	public CommonJson getAllPendingAprovalBooking(HttpServletRequest request) throws Exception {
+//		jsonSchemaValidate(request,userId);
+		CommonJson bookings = new CommonJson();
+
+		List<CommonJson> result = bookingService.getAllPendingAprovalBooking();
+
+		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("bookings", result).set("success",
+				Boolean.TRUE);
+
+	}
 
 }

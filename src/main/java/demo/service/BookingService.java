@@ -11,5 +11,7 @@ public interface BookingService {
 	public List<BookingDAO> getAllBookings();
 	
 	public BookingDAO cancelBooking(String bookingId) throws Exception;
+	
+	public List<CommonJson> getAllPendingAprovalBooking();
 
 }

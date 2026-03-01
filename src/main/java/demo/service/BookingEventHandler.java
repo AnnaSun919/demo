@@ -54,4 +54,25 @@ public class BookingEventHandler implements BookingService {
 		return booking;
 	}
 
+	public List<CommonJson> getAllPendingAprovalBooking() {
+		List<Object[]> results = bookingRepository.findAllPendingFutureBookings();
+
+		List<CommonJson> bookingList = new ArrayList<>();
+
+		for (Object[] row : results) {
+			CommonJson json = new CommonJson();
+			json.set("bookingId", row[0]);
+			json.set("title", row[1]);
+			json.set("userId", row[2]);
+			json.set("status", row[3]);
+			json.set("roomName", row[4]);
+			json.set("startAt", row[5]);
+			json.set("endAt", row[6]);
+			bookingList.add(json);
+		}
+
+		return bookingList;
+
+	}
+
 }

@@ -20,10 +20,10 @@ public class BookingDAO {
 	@Column(name = "ID")
 	private String bookingId;
 	
-	@Column(name="USERID" )
+	@Column(name="USER_ID" )
 	private String userId;
 	
-	@Column(name="ROOMID")
+	@Column(name="ROOM_ID")
 	private String roomId;	
 	
 	@Column(name="STATUS")

@@ -21,6 +21,7 @@ public class RestURIConstants {
 	public static final String USERAVAILABLEROOMS = "user/available-rooms";
 	public static final String USERROOMAVAILABLEROOMTIMESLOT = "user/available-timeslots";
 	public static final String USERBOOKROOMS = "user/book-room";
+	public static final String PENDINGAPPROVAL = "admin/pending-approvals";
 	
 	//group
 	public static final String CREATEGROUP = "admin/create-group";
