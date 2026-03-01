@@ -6,13 +6,23 @@ public class RestURIConstants {
 	public static final String CREATE_USER = "/create-user";
 	public static final String LOGIN = "/login";
 	
-	//room 
+	//admin 
+	
+	//admin - room 
 	public static final String ROOMS = "admin/rooms";
 	public static final String ROOM = "admin/room";
 	public static final String ADDROOMS = "admin/add-room";
 	public static final String BOOKROOMS = "admin/book-rooms";
 	public static final String EDITROOM = "admin/edit-room";
 	public static final String DELETEROOM = "admin/delete-room";
+	
+	public static final String PENDINGAPPROVAL = "admin/pending-approvals";
+	public static final String APPROVEBOOKING  = "admin/approve-booking";
+	public static final String REJECTBOOKING  = "admin/reject-booking";
+	
+	//admin - group
+	public static final String CREATEGROUP = "admin/create-group";
+	public static final String GROUPS = "admin/groups";
 	
 	//booking
 	public static final String BOOKINGS = "bookings";
@@ -21,10 +31,8 @@ public class RestURIConstants {
 	public static final String USERAVAILABLEROOMS = "user/available-rooms";
 	public static final String USERROOMAVAILABLEROOMTIMESLOT = "user/available-timeslots";
 	public static final String USERBOOKROOMS = "user/book-room";
-	public static final String PENDINGAPPROVAL = "admin/pending-approvals";
+
 	
-	//group
-	public static final String CREATEGROUP = "admin/create-group";
-	public static final String GROUPS = "admin/groups";
+
 
 }

@@ -73,5 +73,31 @@ public class BookingController extends ApiController {
 				Boolean.TRUE);
 
 	}
+	
+	@RequestMapping(value = RestURIConstants.APPROVEBOOKING, method = RequestMethod.PATCH)
+	public CommonJson approveBooking(HttpServletRequest request, @RequestParam("bookingId") String bookingId)
+			throws Exception {
+//		jsonSchemaValidate(request,userId);
+		CommonJson bookings = new CommonJson();
+
+		BookingDAO result = bookingService.approveBooking(bookingId);
+
+		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("booking", result).set("success",
+				Boolean.TRUE);
+
+	}
+	
+	@RequestMapping(value = RestURIConstants.REJECTBOOKING , method = RequestMethod.PATCH)
+	public CommonJson rejectBooking(HttpServletRequest request, @RequestParam("bookingId") String bookingId)
+			throws Exception {
+//		jsonSchemaValidate(request,userId);
+		CommonJson bookings = new CommonJson();
+
+		BookingDAO result = bookingService.rejectBooking(bookingId);
+
+		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("booking", result).set("success",
+				Boolean.TRUE);
+
+	}
 
 }

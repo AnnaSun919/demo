@@ -16,6 +16,12 @@ public class BookingEventHandler implements BookingService {
 	private BookingRepository bookingRepository;
 
 	@Override
+	public List<BookingDAO> getAllBookings() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public List<CommonJson> getMyBookings(String userId) {
 
 		List<Object[]> results = bookingRepository.findBookingByUserId(userId);
@@ -32,26 +38,6 @@ public class BookingEventHandler implements BookingService {
 			bookingList.add(json);
 		}
 		return bookingList;
-	}
-
-	@Override
-	public List<BookingDAO> getAllBookings() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public BookingDAO cancelBooking(String bookingId) throws Exception {
-		BookingDAO booking = bookingRepository.findBybookingId(bookingId);
-
-		if (booking == null) {
-			throw new Exception("Booking not found");
-		}
-
-		booking.setStatus("CANCELLED");
-		booking.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		bookingRepository.save(booking);
-
-		return booking;
 	}
 
 	public List<CommonJson> getAllPendingAprovalBooking() {
@@ -75,4 +61,45 @@ public class BookingEventHandler implements BookingService {
 
 	}
 
+	public BookingDAO cancelBooking(String bookingId) throws Exception {
+		BookingDAO booking = bookingRepository.findBybookingId(bookingId);
+
+		if (booking == null) {
+			throw new Exception("Booking not found");
+		}
+
+		booking.setStatus("CANCELLED");
+		booking.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		bookingRepository.save(booking);
+
+		return booking;
+	}
+	
+	public BookingDAO approveBooking(String bookingId) throws Exception {
+		BookingDAO booking = bookingRepository.findBybookingId(bookingId);
+
+		if (booking == null) {
+			throw new Exception("Booking not found");
+		}
+
+		booking.setStatus("APPROVED");
+		booking.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		bookingRepository.save(booking);
+
+		return booking;
+	}
+
+	public BookingDAO rejectBooking(String bookingId) throws Exception {
+		BookingDAO booking = bookingRepository.findBybookingId(bookingId);
+
+		if (booking == null) {
+			throw new Exception("Booking not found");
+		}
+
+		booking.setStatus("REJECTED");
+		booking.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		bookingRepository.save(booking);
+
+		return booking;
+	}
 }
