@@ -17,9 +17,8 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 public class BookingDAO {
 	
 	@Id
-	@Column(name="ID")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer bookingId;
+	@Column(name = "ID")
+	private String bookingId;
 	
 	@Column(name="USERID" )
 	private String userId;
@@ -45,11 +44,11 @@ public class BookingDAO {
 	@Column(name="UPDATED_AT")
 	private Timestamp updatedAt;
 
-	public Integer getBookingId() {
+	public String getBookingId() {
 		return bookingId;
 	}
 
-	public void setBookingId(Integer bookingId) {
+	public void setBookingId(String bookingId) {
 		this.bookingId = bookingId;
 	}
 

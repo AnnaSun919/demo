@@ -39,17 +39,32 @@ public class BookingController extends ApiController {
 	
 	
 
-	@RequestMapping(value = RestURIConstants.USERBOOKINGS, method = RequestMethod.GET)
+	@RequestMapping(value = RestURIConstants.MYBOOKINGS, method = RequestMethod.GET)
 	public CommonJson getUserBookings(HttpServletRequest request, @RequestParam("userId") String userId) throws Exception {
 //		jsonSchemaValidate(request,userId);
 		CommonJson bookings = new CommonJson();
 
-		List<BookingDAO> listOfBookings = bookingService.getUserBookings(userId);
+		List<CommonJson> listOfBookings = bookingService.getMyBookings(userId);
 
 		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL)
 				.set("bookings", listOfBookings)
 				.set("success", Boolean.TRUE);
 
 	}
+	
+	@RequestMapping(value = RestURIConstants.CANCELBOOKING, method = RequestMethod.PATCH)
+	public CommonJson cancelUserBookings(HttpServletRequest request, @RequestParam("bookingId") String bookingId) throws Exception {
+//		jsonSchemaValidate(request,userId);
+		CommonJson bookings = new CommonJson();
+
+		BookingDAO Booking = bookingService.cancelBooking(bookingId);
+
+		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL)
+				.set("booking", Booking)
+				.set("success", Boolean.TRUE);
+
+	}
+	
+	
 
 }

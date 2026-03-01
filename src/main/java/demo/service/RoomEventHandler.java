@@ -126,6 +126,7 @@ public class RoomEventHandler implements RoomService {
 
 			// save booking
 			BookingDAO booking = new BookingDAO();
+			booking.setBookingId(UUID.randomUUID().toString());
 			booking.setUserId(userId);
 			booking.setRoomId(roomId);
 			booking.setStatus("PENDING");
