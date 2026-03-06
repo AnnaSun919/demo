@@ -26,14 +26,20 @@ public interface BookingRepository extends JpaRepository<BookingDAO, Integer> {
 	@Query(value = "SELECT * FROM BOOKING " + "WHERE USER_ID = :userId " + "AND ROOM_ID = :roomId "
 			+ "AND START_AT < :endAt AND END_AT > :startAt "
 			+ "AND STATUS IN ('PENDING', 'APPROVED') LIMIT 1", nativeQuery = true)
-	BookingDAO findUserOverlappingBooking(@Param("userId") String userId, @Param("roomId") String roomId,
+	public BookingDAO findUserOverlappingBooking(@Param("userId") String userId, @Param("roomId") String roomId,
 			@Param("startAt") Timestamp startAt, @Param("endAt") Timestamp endAt);
 
 	@Query(value = "SELECT b.Id, b.title, b.user_Id, b.status, r.name, b.start_At, b.end_At "
 			+ "FROM Booking b JOIN Room r ON b.room_Id = r.Id "
 			+ "WHERE b.status = 'PENDING' AND b.start_At > CURRENT_TIMESTAMP "
 			+ "ORDER BY b.start_At ASC", nativeQuery = true)
-	List<Object[]> findAllPendingFutureBookings();
+	public List<Object[]> findAllPendingFutureBookings();
 
 	public BookingDAO findBybookingId(String bookingId);
+
+	@Query(value = "SELECT b.Id AS bookingId, b.title, b.status, b.start_At, b.end_At, b.processed_By, "
+			+ "r.name AS roomName, u.Id AS userId, u.name AS userName " + "FROM Booking b "
+			+ "JOIN Room r ON b.room_Id = r.Id " + "JOIN User u ON b.user_Id = u.Id "
+			+ "WHERE b.start_At > CURRENT_TIMESTAMP " + "ORDER BY b.start_At ASC", nativeQuery = true)
+	public List<Object[]> findAllUserFutureBookings();
 }

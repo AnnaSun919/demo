@@ -24,12 +24,12 @@ public class BookingController extends ApiController {
 	@Autowired
 	private BookingService bookingService;
 
-	@RequestMapping(value = RestURIConstants.BOOKINGS, method = RequestMethod.GET)
+	@RequestMapping(value = RestURIConstants.ALLUSERBOOKINGS, method = RequestMethod.GET)
 	public CommonJson getAllBookings(HttpServletRequest request) throws Exception {
 //		jsonSchemaValidate(request,userId);
 		CommonJson bookings = new CommonJson();
 
-		List<BookingDAO> listOfBookings = bookingService.getAllBookings();
+		List<CommonJson> listOfBookings = bookingService.getAllUserFutureBookings();
 
 		return bookings.set("errCode", GeneralUtil.ERRCODE_REQUEST_SUCCESSFUL).set("bookings", listOfBookings)
 				.set("success", Boolean.TRUE);

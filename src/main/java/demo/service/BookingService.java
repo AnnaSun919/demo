@@ -8,7 +8,7 @@ public interface BookingService {
 
 	public List<CommonJson>  getMyBookings(String userId);
 	
-	public List<BookingDAO> getAllBookings();
+	public List<CommonJson>  getAllUserFutureBookings();
 	
 	public BookingDAO cancelBooking(String bookingId) throws Exception;
 	
@@ -16,6 +16,6 @@ public interface BookingService {
 	
 	public BookingDAO rejectBooking(String bookingId) throws Exception;
 	
-	public List<CommonJson> getAllPendingAprovalBooking();
+//	public List<CommonJson> getAllPendingAprovalBooking();
 
 }

@@ -16,9 +16,26 @@ public class BookingEventHandler implements BookingService {
 	private BookingRepository bookingRepository;
 
 	@Override
-	public List<BookingDAO> getAllBookings() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<CommonJson> getAllUserFutureBookings() {
+		List<Object[]> results = bookingRepository.findAllUserFutureBookings();
+		
+		List<CommonJson> bookingList = new ArrayList<>();
+
+		for (Object[] row : results) {
+		    CommonJson json = new CommonJson();
+		    json.set("bookingId", row[0]);
+		    json.set("title", row[1]);
+		    json.set("status", row[2]);
+		    json.set("startAt", row[3]);
+		    json.set("endAt", row[4]);
+		    json.set("reviewedBy", row[5]);
+		    json.set("roomName", row[6]);
+		    json.set("userId", row[7]);
+		    json.set("userName", row[8]);
+		    bookingList.add(json);
+		}
+		
+		return bookingList;
 	}
 
 	@Override
@@ -40,26 +57,26 @@ public class BookingEventHandler implements BookingService {
 		return bookingList;
 	}
 
-	public List<CommonJson> getAllPendingAprovalBooking() {
-		List<Object[]> results = bookingRepository.findAllPendingFutureBookings();
-
-		List<CommonJson> bookingList = new ArrayList<>();
-
-		for (Object[] row : results) {
-			CommonJson json = new CommonJson();
-			json.set("bookingId", row[0]);
-			json.set("title", row[1]);
-			json.set("userId", row[2]);
-			json.set("status", row[3]);
-			json.set("roomName", row[4]);
-			json.set("startAt", row[5]);
-			json.set("endAt", row[6]);
-			bookingList.add(json);
-		}
-
-		return bookingList;
-
-	}
+//	public List<CommonJson> getAllPendingAprovalBooking() {
+//		List<Object[]> results = bookingRepository.findAllPendingFutureBookings();
+//
+//		List<CommonJson> bookingList = new ArrayList<>();
+//
+//		for (Object[] row : results) {
+//			CommonJson json = new CommonJson();
+//			json.set("bookingId", row[0]);
+//			json.set("title", row[1]);
+//			json.set("userId", row[2]);
+//			json.set("status", row[3]);
+//			json.set("roomName", row[4]);
+//			json.set("startAt", row[5]);
+//			json.set("endAt", row[6]);
+//			bookingList.add(json);
+//		}
+//
+//		return bookingList;
+//
+//	}
 
 	public BookingDAO cancelBooking(String bookingId) throws Exception {
 		BookingDAO booking = bookingRepository.findBybookingId(bookingId);

@@ -16,6 +16,7 @@ public class RestURIConstants {
 	public static final String EDITROOM = "admin/edit-room";
 	public static final String DELETEROOM = "admin/delete-room";
 	
+	public static final String ALLUSERBOOKINGS = "admin/all-bookings";
 	public static final String PENDINGAPPROVAL = "admin/pending-approvals";
 	public static final String APPROVEBOOKING  = "admin/approve-booking";
 	public static final String REJECTBOOKING  = "admin/reject-booking";
