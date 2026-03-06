@@ -10,7 +10,10 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +28,8 @@ public class ApiController {
 
 	private final Map<String, JsonSchema> schemaCache = new HashMap<>();
 	private final ObjectMapper objectMapper = new ObjectMapper();
+	
+	private static final Logger log = LoggerFactory.getLogger(ApiController.class);
 
 	protected String getJsonSchemaKey(HttpServletRequest request) {
 		return request.getMethod() + " " + request.getServletPath();
@@ -102,6 +107,20 @@ public class ApiController {
 		if (!validationResult.isEmpty()) {
 			System.out.println(validationResult);
 		}
+	}
+
+	// Exception handler
+	@ExceptionHandler(Exception.class)
+	public CommonJson unexpectedError(HttpServletRequest request, Exception e) throws Exception {
+		CommonJson response = new CommonJson();
+
+		response.set("success", Boolean.FALSE);
+		response.set("message", "unexpected Error" + e);
+
+		log.error("handleError URL = " + request.getRequestURL());
+		log.error("handleError MSG = " + Thread.currentThread().getStackTrace()[1].getMethodName()+"@"+this.getClass().getSimpleName(), e);
+
+		return response;
 	}
 
 }
