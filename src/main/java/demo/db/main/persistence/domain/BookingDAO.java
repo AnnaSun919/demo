@@ -15,33 +15,36 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 @Table(name = "BOOKING")
 @SelectBeforeUpdate
 public class BookingDAO {
-	
+
 	@Id
 	@Column(name = "ID")
 	private String bookingId;
-	
-	@Column(name="USER_ID" )
+
+	@Column(name = "USER_ID")
 	private String userId;
-	
-	@Column(name="ROOM_ID")
-	private String roomId;	
-	
-	@Column(name="STATUS")
-	private String status;	
-	
-	@Column(name="TITLE")
-	private String title;	
-	
-	@Column(name="START_AT")
+
+	@Column(name = "ROOM_ID")
+	private String roomId;
+
+	@Column(name = "STATUS")
+	private String status;
+
+	@Column(name = "TITLE")
+	private String title;
+
+	@Column(name = "START_AT")
 	private Timestamp startAt;
-	
-	@Column(name="END_AT")
+
+	@Column(name = "END_AT")
 	private Timestamp endAt;
 
-	@Column(name="CREATED_AT")
+	@Column(name = "PROCESSED_BY")
+	private String processedBy;
+
+	@Column(name = "CREATED_AT")
 	private Timestamp createdAt;
-	
-	@Column(name="UPDATED_AT")
+
+	@Column(name = "UPDATED_AT")
 	private Timestamp updatedAt;
 
 	public String getBookingId() {
@@ -100,6 +103,14 @@ public class BookingDAO {
 		this.endAt = endAt;
 	}
 
+	public String getProcessedBy() {
+		return processedBy;
+	}
+
+	public void setProcessedBy(String processedBy) {
+		this.processedBy = processedBy;
+	}
+
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
@@ -114,6 +125,6 @@ public class BookingDAO {
 
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
-	}	
+	}
 
 }
