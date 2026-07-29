@@ -99,11 +99,13 @@ public class ApiController {
 		return schema;
 	}
 
-	protected void jsonSchemaValidate(HttpServletRequest request, CommonJson requestBody) {
+	protected void jsonSchemaValidate(HttpServletRequest request, CommonJson requestBody) throws Exception {
 		String jsonSchemaKey = getJsonSchemaKey(request);
 		CommonJson requestQuery = getRequestQuery(request);
 		CommonJson formattedRequestJson = getFormmatedCommonJsonForValidation(requestQuery, requestBody);
 		Set<ValidationMessage> validationResult = validateRequestWithJsonSchema(jsonSchemaKey, formattedRequestJson);
+
+		// throw Error
 		if (!validationResult.isEmpty()) {
 			System.out.println(validationResult);
 		}
@@ -115,7 +117,7 @@ public class ApiController {
 		CommonJson response = new CommonJson();
 
 		response.set("success", Boolean.FALSE);
-		response.set("message", "unexpected Error" + e);
+		response.set("message", "Error : " + e.getMessage());
 
 		log.error("handleError URL = " + request.getRequestURL());
 		log.error("handleError MSG = " + Thread.currentThread().getStackTrace()[1].getMethodName()+"@"+this.getClass().getSimpleName(), e);
